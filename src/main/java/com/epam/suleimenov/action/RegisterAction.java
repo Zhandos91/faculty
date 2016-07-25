@@ -7,9 +7,6 @@ import com.epam.suleimenov.service.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by Zhandos_Suleimenov on 7/21/2016.
- */
 public class RegisterAction implements Action {
 
     private FacultyDAO facultyDAO = null;
@@ -23,11 +20,14 @@ public class RegisterAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
-        int course_id = Integer.parseInt(req.getParameter("course_id"));
-        Student student = (Student) req.getSession().getAttribute("student");
+        String get_course_id = req.getParameter("course_id");
+        if(get_course_id != null) {
+            int course_id = Integer.parseInt(get_course_id);
+            Student student = (Student) req.getSession().getAttribute("student");
 
-        facultyDAO.matchCourseAndStudent(facultyDAO.getNextIdBySequence("cs_match"), course_id, student.getId());
-        student.getCourses().add(facultyDAO.getCourseById(course_id));
+            facultyDAO.matchCourseAndStudent(facultyDAO.getNextIdBySequence("cs_match"), course_id, student.getId());
+            student.getCourses().add(facultyDAO.getCourseById(course_id));
+        }
         return studentAction;
     }
 }

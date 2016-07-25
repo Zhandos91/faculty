@@ -57,17 +57,21 @@ public class Student extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Student student = (Student) o;
 
         if (name != null ? !name.equals(student.name) : student.name != null) return false;
+        if (surname != null ? !surname.equals(student.surname) : student.surname != null) return false;
         return courses != null ? courses.equals(student.courses) : student.courses == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (courses != null ? courses.hashCode() : 0);
         return result;
     }

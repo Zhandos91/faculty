@@ -51,10 +51,17 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+
+    @Override
+    public String toString() {
+        return "Name: " + name + " Surname: " + surname + " Email: " + email + " User Role:" + userRole;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         User user = (User) o;
 
@@ -68,7 +75,8 @@ public class User extends BaseEntity {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (userRole != null ? userRole.hashCode() : 0);

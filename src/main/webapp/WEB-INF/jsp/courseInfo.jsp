@@ -9,6 +9,8 @@
 
 <h3>Course: ${sessionScope.course.getName()} </h3>
 
+<h3>Description: ${sessionScope.course.getDescription()} </h3>
+
 <h3>Students: <br/><br/>
 
 <c:forEach items="${sessionScope.students}" var="student">

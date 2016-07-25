@@ -56,7 +56,6 @@ public class Archive extends BaseEntity {
         return "Professor:" + teacher + " Student:"+ student+ " Course:" + course + " Grade:" + grade + " Date: " + date.toString();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

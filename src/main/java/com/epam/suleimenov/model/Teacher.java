@@ -50,6 +50,7 @@ public class Teacher extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Teacher teacher = (Teacher) o;
 
@@ -60,7 +61,8 @@ public class Teacher extends BaseEntity {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (courses != null ? courses.hashCode() : 0);
         return result;
     }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 
-public class GradeAction implements Action {
+public class ShowGradeAction implements Action {
 
 
 
@@ -20,7 +20,7 @@ public class GradeAction implements Action {
         private ActionResult gradeAction = new ActionResult("grade");
 
 
-        public GradeAction() {
+        public ShowGradeAction() {
             this.facultyDAO = Service.getFacultyDAO();
         }
 
