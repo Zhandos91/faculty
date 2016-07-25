@@ -4,8 +4,6 @@ package com.epam.suleimenov.action;
  * Created by Zhandos_Suleimenov on 7/14/2016.
  */
 
-import com.epam.suleimenov.service.Connector;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

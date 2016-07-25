@@ -1,32 +1,41 @@
 package com.epam.suleimenov.action;
 
+import com.epam.suleimenov.dao.CourseDAO;
 import com.epam.suleimenov.dao.FacultyDAO;
+import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.Student;
 import com.epam.suleimenov.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class RegisterAction implements Action {
 
-    private FacultyDAO facultyDAO = null;
+    private CourseDAO courseDAO;
+    private FacultyDAO facultyDAO;
     private ActionResult studentAction = new ActionResult("student");
-
-    public RegisterAction() {
-        facultyDAO = Service.getFacultyDAO();
-
-    }
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+
+
+        try(Connection connection = Service.getConnection()) {
+            courseDAO = Service.getCourseDAO(connection);
+            facultyDAO = Service.getFacultyDAO(connection);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         String get_course_id = req.getParameter("course_id");
         if(get_course_id != null) {
             int course_id = Integer.parseInt(get_course_id);
             Student student = (Student) req.getSession().getAttribute("student");
 
-            facultyDAO.matchCourseAndStudent(facultyDAO.getNextIdBySequence("cs_match"), course_id, student.getId());
-            student.getCourses().add(facultyDAO.getCourseById(course_id));
+            courseDAO.matchCourseAndStudent(facultyDAO.getNextIdBySequence("cs_match"), course_id, student.getId());
+            student.getCourses().add(courseDAO.getCourseById(course_id));
         }
         return studentAction;
     }

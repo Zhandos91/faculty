@@ -7,10 +7,10 @@ package com.epam.suleimenov.servlet;
 import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
+import com.epam.suleimenov.dao.CourseDAO;
+import com.epam.suleimenov.dao.DAOFactory;
 import com.epam.suleimenov.dao.FacultyDAO;
-import com.epam.suleimenov.dao.FacultyDAOImpl;
-import com.epam.suleimenov.model.Archive;
-import com.epam.suleimenov.model.Student;
+import com.epam.suleimenov.dao.OracleDAOFactory;
 import com.epam.suleimenov.service.Service;
 
 import javax.servlet.ServletException;
@@ -18,24 +18,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
-    private FacultyDAO facultyDAO;
+    private DAOFactory daoFactory;
 
     private Service service;
+    private CourseDAO courseDAO;
 
     @Override
     public void init() throws ServletException {
-
-        facultyDAO = new FacultyDAOImpl();
+       daoFactory = new OracleDAOFactory();
         service = new Service();
-        service.setFacultyDAO(facultyDAO);
+        service.setDaoFactory(daoFactory);
         actionFactory = new ActionFactory();
-
-
     }
 
     @Override

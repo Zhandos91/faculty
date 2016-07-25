@@ -1,27 +1,45 @@
 package com.epam.suleimenov.service;
 
-import com.epam.suleimenov.dao.FacultyDAO;
-import com.epam.suleimenov.dao.FacultyDAOImpl;
-import com.epam.suleimenov.model.Archive;
-import com.epam.suleimenov.model.Course;
-import com.epam.suleimenov.model.Student;
-import com.epam.suleimenov.model.Teacher;
+import com.epam.suleimenov.dao.*;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Created by admin on 7/4/2016.
  */
 public class Service {
 
-    private static FacultyDAO facultyDAO;
+    private static DAOFactory daoFactory;
 
-    public static FacultyDAO getFacultyDAO() {
-        return  facultyDAO;
+    public void setDaoFactory(DAOFactory daoFactory) {
+        Service.daoFactory = daoFactory;
     }
 
-    public void setFacultyDAO(FacultyDAO facultyDAO) {
-        this.facultyDAO = facultyDAO;
+    public static DAOFactory getDAOFactory() {
+        return daoFactory;
     }
+
+    public static ArchiveDAO getArchiveDAO(Connection connection) {
+        return daoFactory.getArchiveDAO(connection);
+    }
+    public static Connection getConnection() throws SQLException {
+        return daoFactory.getConnection();
+    }
+    public static CourseDAO getCourseDAO(Connection connection) {
+        return  daoFactory.getCourseDAO(connection);
+    }
+    public static FacultyDAO getFacultyDAO(Connection connection) {
+        return  daoFactory.getFacultyDAO(connection);
+    }
+    public static StudentDAO getStudentDAO(Connection connection) {
+        return daoFactory.getStudentDAO(connection);
+    }
+    public static TeacherDAO getTeacherDAO(Connection connection) {
+        return  daoFactory.getTeacherDAO(connection);
+    }
+    public static UserDAO getUserDAO(Connection connection) {
+        return  daoFactory.getUserDAO(connection);
+    }
+
 }
