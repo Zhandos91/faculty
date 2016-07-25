@@ -34,8 +34,6 @@ public class SignupAction implements Action {
         String confirm_password = req.getParameter("confirm_password");
         String userRole = req.getParameter("userRole");
 
-        System.out.println("In SignupAction " + password + userRole);
-
         if (facultyDAO.findUserByEmail(email) != null) {
             req.setAttribute("signupError", "The email is already used, try different one!");
             return signupAgain;
