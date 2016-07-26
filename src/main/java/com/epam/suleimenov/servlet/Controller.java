@@ -6,7 +6,7 @@ import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
 import com.epam.suleimenov.connection.DBConnection;
 import com.epam.suleimenov.dao.DAOFactory;
-import com.epam.suleimenov.dao.OracleDAOFactory;
+import com.epam.suleimenov.dao.FacultyDAOFactory;
 import com.epam.suleimenov.service.Service;
 
 import javax.servlet.ServletException;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Properties;
 
 public class Controller extends HttpServlet {
 
@@ -25,7 +26,16 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        daoFactory = new OracleDAOFactory();
+
+        Properties properties = new Properties();
+        try {
+            properties.load(Controller.class.getClassLoader().getResourceAsStream("dao.properties"));
+        } catch (IOException e) {
+            System.out.println("Property file is not set or found");
+            e.printStackTrace();
+        }
+
+        daoFactory = DAOFactory.getDAOFactory(properties.getProperty("dao"));
         service = new Service();
         service.setDaoFactory(daoFactory);
         connection = DBConnection.getConnection();

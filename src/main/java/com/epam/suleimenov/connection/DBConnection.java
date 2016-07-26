@@ -1,6 +1,6 @@
 package com.epam.suleimenov.connection;
 
-import com.epam.suleimenov.dao.OracleDAOFactory;
+import com.epam.suleimenov.dao.FacultyDAOFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class DBConnection {
         Properties properties = new Properties();
 
         try {
-            properties.load(OracleDAOFactory.class.getClassLoader().getResourceAsStream("db.properties"));
+            properties.load(FacultyDAOFactory.class.getClassLoader().getResourceAsStream("db.properties"));
             dbDriver = properties.getProperty("db_driver");
             dbPath = properties.getProperty("db_path");
             dbUser = properties.getProperty("db_user");
