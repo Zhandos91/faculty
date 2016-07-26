@@ -11,17 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * Created by Zhandos_Suleimenov on 7/19/2016.
- */
 public class AddCourseAction implements Action {
 
-        private ActionResult addCourseAgain = new ActionResult("course");
+        private ActionResult addCourseAgain = new ActionResult("addCourse");
         private ActionResult teacherAction = new ActionResult("teacher");
-
-        public AddCourseAction() {
-
-        }
 
         @Override
         public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -46,7 +39,5 @@ public class AddCourseAction implements Action {
 
             return teacherAction;
         }
-
-
 }
 

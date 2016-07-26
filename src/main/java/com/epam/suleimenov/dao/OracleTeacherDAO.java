@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class OracleTeacherDAO implements TeacherDAO {
 
     private Connection connection;
-    private final String single_quote = new String("'");
 
     public OracleTeacherDAO(Connection connection) {
         this.connection = connection;

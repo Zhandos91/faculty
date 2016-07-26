@@ -1,9 +1,5 @@
 package com.epam.suleimenov.action;
 
-/**
- * Created by Zhandos_Suleimenov on 7/14/2016.
- */
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +9,6 @@ public class ActionFactory {
 
     private Map<String, Action> actions;
     private Properties properties;
-
 
     public ActionFactory() {
         actions = new HashMap<>();
@@ -26,21 +21,15 @@ public class ActionFactory {
             System.out.println("Property file is not set or found");
             e.printStackTrace();
         }
-
-
         for (String key : properties.stringPropertyNames()) {
             String value = properties.getProperty(key);
             actions.put(key, getActionClassByName(value));
         }
-
-
-
     }
 
     public Action getAction(String actionName) {
         return actions.get(actionName);
     }
-
 
     public Action getActionClassByName(String actionName) {
         Action action = null;
@@ -54,10 +43,6 @@ public class ActionFactory {
         } catch (IllegalAccessException illegalAccessException) {
             illegalAccessException.printStackTrace();
         }
-
-
         return action;
     }
-
-
 }

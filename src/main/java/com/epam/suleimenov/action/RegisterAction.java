@@ -22,7 +22,6 @@ public class RegisterAction implements Action {
         if(get_course_id != null) {
             int course_id = Integer.parseInt(get_course_id);
             Student student = (Student) req.getSession().getAttribute("student");
-
             Service.getCourseDAO().matchCourseAndStudent(Service.getFacultyDAO().getNextIdBySequence("cs_match"), course_id, student.getId());
             student.getCourses().add(Service.getCourseDAO().getCourseById(course_id));
         }

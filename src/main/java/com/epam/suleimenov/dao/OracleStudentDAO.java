@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class OracleStudentDAO implements StudentDAO {
 
     private Connection connection;
-    private final String single_quote = new String("'");
 
     public OracleStudentDAO(Connection connection) {
         this.connection = connection;

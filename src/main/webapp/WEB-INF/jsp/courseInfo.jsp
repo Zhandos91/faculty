@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<h3>Teacher: ${sessionScope.teacher.getName()} </h3>
+<h3><u>Teacher:</u> ${sessionScope.teacher.getName()} </h3>
 
-<h3>Course: ${sessionScope.course.getName()} </h3>
+<h3><u>Course:</u> ${sessionScope.course.getName()} </h3>
 
-<h3>Description: ${sessionScope.course.getDescription()} </h3>
+<h3><u>Description:</u> ${sessionScope.course.getDescription()} </h3>
 
-<h3>Students: <br/><br/>
+<h3><u>Students:</u> <br/><br/>
 
 <c:forEach items="${sessionScope.students}" var="student">
     ${student.getName()} ${student.getSurname()}<br/>

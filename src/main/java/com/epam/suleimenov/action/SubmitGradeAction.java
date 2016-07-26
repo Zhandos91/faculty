@@ -17,7 +17,6 @@ public class SubmitGradeAction implements Action {
 
     private ActionResult teacherAction = new ActionResult("teacher");
 
-
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -32,11 +31,8 @@ public class SubmitGradeAction implements Action {
             Service.getCourseDAO().changeCourseStatus(course.getId(), "archived");
             teacher = Service.getTeacherDAO().getTeacherById(teacher.getId());
             req.getSession().setAttribute("teacher", teacher);
-
         }
         return teacherAction;
 
     }
-
-
 }

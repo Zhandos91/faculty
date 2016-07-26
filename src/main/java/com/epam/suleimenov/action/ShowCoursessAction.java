@@ -29,9 +29,7 @@ public class ShowCoursessAction implements Action {
         for (Course course : student_courses)
             registration_courses.remove(course);
 
-
         req.getSession().setAttribute("courses", registration_courses);
-
 
         return registerAction;
     }

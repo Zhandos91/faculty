@@ -1,9 +1,8 @@
 package com.epam.suleimenov.service;
 
 import com.epam.suleimenov.dao.*;
-
 import java.sql.Connection;
-import java.sql.SQLException;
+
 
 /**
  * Created by admin on 7/4/2016.

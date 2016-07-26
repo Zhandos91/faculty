@@ -14,11 +14,9 @@ import java.util.ArrayList;
 
 public class SignupAction implements Action {
 
-    private ActionResult home = new ActionResult("home", true);
     private ActionResult signupAgain = new ActionResult("signup");
     private ActionResult teacherAction = new ActionResult("teacher");
     private ActionResult studentAction = new ActionResult("student");
-
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {

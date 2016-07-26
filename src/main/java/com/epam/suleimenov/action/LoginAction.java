@@ -16,13 +16,10 @@ import java.util.ArrayList;
 
 public class LoginAction implements Action {
 
-
     private ActionResult loginAgain = new ActionResult("login");
     private ActionResult teacherAction = new ActionResult("teacher");
     private ActionResult studentAction = new ActionResult("student");
     private ActionResult adminAction = new ActionResult("admin");
-
-
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -39,15 +36,12 @@ public class LoginAction implements Action {
                 return teacherAction;
             }else if(userRole.equals("student")) {
                 Student student = Service.getStudentDAO().getStudentById(Service.getStudentDAO().findStudentIdByUserId(user.getId()));
-                for(Course course : student.getCourses())
-                    System.out.println(course.getName());
                 req.getSession().setAttribute("student", student);
                 return studentAction;
             }
 
             ArrayList<Archive> archives = Service.getArchiveDAO().getArchive();
             req.getSession().setAttribute("archives", archives);
-
 
             return adminAction;
         } else {

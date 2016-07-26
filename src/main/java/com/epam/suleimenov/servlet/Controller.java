@@ -1,8 +1,5 @@
 package com.epam.suleimenov.servlet;
 
-/**
- * Created by Zhandos_Suleimenov on 7/13/2016.
- */
 
 import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
@@ -25,9 +22,8 @@ public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
     private DAOFactory daoFactory;
-
     private Service service;
-    private CourseDAO courseDAO;
+
 
     @Override
     public void init() throws ServletException {
@@ -40,7 +36,6 @@ public class Controller extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String actionName = req.getMethod() + req.getPathInfo();
-
         Action action = actionFactory.getAction(actionName);
 
         if (action == null) {
@@ -49,7 +44,6 @@ public class Controller extends HttpServlet {
         }
 
         ActionResult result = action.execute(req, resp);
-
         doForwardOrRedirect(result, req, resp);
     }
 
