@@ -10,35 +10,31 @@ import java.sql.Connection;
 public class Service {
 
     private static DAOFactory daoFactory;
-
-    public void setDaoFactory(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
-
-    public static ArchiveDAO getArchiveDAO() {
-        return daoFactory.getArchiveDAO(getConnection());
-    }
-    public static Connection getConnection() {
-        return daoFactory.getConnection();
-    }
+    private static Connection connection;
 
     public static DAOFactory getDAOFactory() {
         return daoFactory;
     }
-    public static CourseDAO getCourseDAO() {
-        return  daoFactory.getCourseDAO(getConnection());
+    public static ArchiveDAO getArchiveDAO() {
+        return daoFactory.getArchiveDAO(connection);
     }
+    public static CourseDAO getCourseDAO() {return  daoFactory.getCourseDAO(connection);}
     public static FacultyDAO getFacultyDAO() {
-        return  daoFactory.getFacultyDAO(getConnection());
+        return  daoFactory.getFacultyDAO(connection);
     }
     public static StudentDAO getStudentDAO() {
-        return daoFactory.getStudentDAO(getConnection());
+        return daoFactory.getStudentDAO(connection);
     }
-    public static TeacherDAO getTeacherDAO() {
-        return  daoFactory.getTeacherDAO(getConnection());
-    }
+    public static TeacherDAO getTeacherDAO() { return  daoFactory.getTeacherDAO(connection);}
     public static UserDAO getUserDAO() {
-        return  daoFactory.getUserDAO(getConnection());
+        return  daoFactory.getUserDAO(connection);
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
     }
 
 }

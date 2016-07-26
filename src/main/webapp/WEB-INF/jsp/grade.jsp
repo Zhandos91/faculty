@@ -13,24 +13,26 @@
 </head>
 <body>
 
-<h2>CourseName: ${sessionScope.course.getName()} </h2> <br/>
-<h3> Student ------ Grade</h3> <br/>
+<h2><u>CourseName:</u> ${sessionScope.course.getName()} </h2> <br/>
 
 <form method="POST" action="submitgrade">
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Grade</th>
+        </tr>
+        <c:forEach items="${sessionScope.students}" var="student" varStatus="loop">
+            <tr>
+                <td> ${student.getName()} ${student.getSurname()}</td>
+                <td><input type="text" name="${student.getId()}"/></td>
+            </tr>
 
-<c:forEach items="${sessionScope.students}" var="student" varStatus="loop">
-
-     ${student.getName()}  ${student.getSurname()}
-
-    <input type="text" name="${student.getId()}"/>
-<br/>
-</c:forEach>
-
-<br/>
-
-
+        </c:forEach>
+    </table>
+    <br/>
     <button type="submit">GRADE</button>
-
+    <div style="color:red">${gradeError}</div>
 </form>
+
 </body>
 </html>

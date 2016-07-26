@@ -11,51 +11,9 @@ import java.util.Properties;
  */
 public class OracleDAOFactory implements DAOFactory {
 
-    private String dbPath;
-    private String dbUser;
-    private String dbPassword;
-    private String dbDriver;
-    private Properties properties;
-
-
-    public OracleDAOFactory() {
-
-        properties = new Properties();
-
-        try {
-            properties.load(OracleDAOFactory.class.getClassLoader().getResourceAsStream("db.properties"));
-            dbDriver = properties.getProperty("db_driver");
-            dbPath = properties.getProperty("db_path");
-            dbUser = properties.getProperty("db_user");
-            dbPassword = properties.getProperty("db_password");
-
-        } catch (IOException e) {
-            System.out.println("Property file is not set or found");
-            e.printStackTrace();
-        }
-
-        try {
-            Class.forName(dbDriver);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Oracle JDBC Driver is not found");
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public ArchiveDAO getArchiveDAO(Connection connection) {
         return new OracleArchiveDAO(connection);
-    }
-
-    @Override
-    public Connection getConnection() {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(dbPath, dbUser, dbPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return  connection;
     }
 
     @Override
