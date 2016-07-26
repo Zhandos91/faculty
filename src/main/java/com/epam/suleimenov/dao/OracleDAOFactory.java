@@ -48,8 +48,14 @@ public class OracleDAOFactory implements DAOFactory {
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(dbPath, dbUser, dbPassword);
+    public Connection getConnection() {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(dbPath, dbUser, dbPassword);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  connection;
     }
 
     @Override

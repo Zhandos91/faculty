@@ -108,7 +108,7 @@ public class OracleTeacherDAO implements TeacherDAO {
             if (resultSet.next()) {
                 user_id = resultSet.getInt("user_id");
                 teacher.setId(id);
-                teacher.setName(Service.getUserDAO(connection).getUserById(user_id).getName());
+                teacher.setName(Service.getUserDAO().getUserById(user_id).getName());
             } else {
                 System.out.println("Cannot find the user");
                 return null;

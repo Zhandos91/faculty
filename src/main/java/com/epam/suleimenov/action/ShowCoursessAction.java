@@ -16,24 +16,15 @@ import java.util.ArrayList;
  * Created by Zhandos_Suleimenov on 7/21/2016.
  */
 public class ShowCoursessAction implements Action {
-    private CourseDAO courseDAO;
-    private FacultyDAO facultyDAO = null;
+
     private ActionResult registerAction = new ActionResult("registration");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
-        try(Connection connection = Service.getConnection()) {
-            courseDAO = Service.getCourseDAO(connection);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
         Student student = (Student) req.getSession().getAttribute("student");
         ArrayList<Course> student_courses = student.getCourses();
-        ArrayList<Course> registration_courses = courseDAO.getAllCoursesByStatus("open");
+        ArrayList<Course> registration_courses = Service.getCourseDAO().getAllCoursesByStatus("open");
 
         for (Course course : student_courses)
             registration_courses.remove(course);

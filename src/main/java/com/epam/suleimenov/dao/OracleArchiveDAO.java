@@ -54,9 +54,9 @@ public class OracleArchiveDAO implements ArchiveDAO {
             while (resultSet.next()) {
                 Archive archive = new Archive();
                 archive.setId(resultSet.getInt("id"));
-                archive.setTeacher(Service.getTeacherDAO(connection).getTeacherById(Service.getTeacherDAO(connection).getTeacherIdByCourseId(resultSet.getInt("course_id"))).getName());
-                archive.setStudent(Service.getStudentDAO(connection).getStudentById(resultSet.getInt("student_id")).getName());
-                archive.setCourse(Service.getCourseDAO(connection).getCourseById(resultSet.getInt("course_id")).getName());
+                archive.setTeacher(Service.getTeacherDAO().getTeacherById(Service.getTeacherDAO().getTeacherIdByCourseId(resultSet.getInt("course_id"))).getName());
+                archive.setStudent(Service.getStudentDAO().getStudentById(resultSet.getInt("student_id")).getName());
+                archive.setCourse(Service.getCourseDAO().getCourseById(resultSet.getInt("course_id")).getName());
                 archive.setGrade(resultSet.getInt("grade"));
                 archive.setDate(resultSet.getDate("date"));
                 archives.add(archive);

@@ -95,9 +95,9 @@ public class OracleStudentDAO implements StudentDAO {
             if (resultSet.next()) {
                 student = new Student();
                 student.setId(resultSet.getInt("id"));
-                student.setName(Service.getUserDAO(connection).getUserById(resultSet.getInt("user_id")).getName());
-                student.setSurname(Service.getUserDAO(connection).getUserById(resultSet.getInt("user_id")).getSurname());
-                student.setCourses(Service.getCourseDAO(connection).getCoursesByStudentId(id));
+                student.setName(Service.getUserDAO().getUserById(resultSet.getInt("user_id")).getName());
+                student.setSurname(Service.getUserDAO().getUserById(resultSet.getInt("user_id")).getSurname());
+                student.setCourses(Service.getCourseDAO().getCoursesByStudentId(id));
             }
 
         } catch (SQLException e) {

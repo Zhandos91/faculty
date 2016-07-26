@@ -16,8 +16,6 @@ import java.sql.SQLException;
  */
 public class AddCourseAction implements Action {
 
-    private CourseDAO courseDAO;
-    private FacultyDAO facultyDAO;
         private ActionResult addCourseAgain = new ActionResult("course");
         private ActionResult teacherAction = new ActionResult("teacher");
 
@@ -37,24 +35,14 @@ public class AddCourseAction implements Action {
                 return addCourseAgain;
             }
 
-
-            try(Connection connection = Service.getConnection()) {
-                courseDAO = Service.getCourseDAO(connection);
-                facultyDAO = Service.getFacultyDAO(connection);
-
                 Course course = new Course();
-                course.setId(facultyDAO.getNextIdBySequence("course"));
-
+                course.setId(Service.getFacultyDAO().getNextIdBySequence("course"));
                 course.setName(name);
                 course.setDescription(description);
                 course.setTeacherId(teacher.getId());
                 course.setStatus("open");
-                courseDAO.addCourse(course);
+                Service.getCourseDAO().addCourse(course);
                 teacher.getCourses().add(course);
-
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
 
             return teacherAction;
         }

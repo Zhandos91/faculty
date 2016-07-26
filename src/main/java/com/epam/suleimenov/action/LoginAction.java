@@ -18,10 +18,6 @@ public class LoginAction implements Action {
 
 
     private ActionResult loginAgain = new ActionResult("login");
-    private ArchiveDAO archiveDAO;
-    private UserDAO userDAO;
-    private StudentDAO studentDAO;
-    private TeacherDAO teacherDAO;
     private ActionResult teacherAction = new ActionResult("teacher");
     private ActionResult studentAction = new ActionResult("student");
     private ActionResult adminAction = new ActionResult("admin");
@@ -34,36 +30,22 @@ public class LoginAction implements Action {
         String password = req.getParameter("password");
         String userRole = req.getParameter("userRole");
 
-
-        try(Connection connection = Service.getConnection()) {
-            archiveDAO = Service.getArchiveDAO(connection);
-            userDAO = Service.getUserDAO(connection);
-            studentDAO = Service.getStudentDAO(connection);
-            teacherDAO = Service.getTeacherDAO(connection);
-
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-
-        if (userDAO.checkUser(login, password, userRole)) {
-            User user = userDAO.findUserByEmail(login);
+        if (Service.getUserDAO().checkUser(login, password, userRole)) {
+            User user = Service.getUserDAO().findUserByEmail(login);
             req.getSession().setAttribute("user", user);
             if(userRole.equals("teacher")) {
-                Teacher teacher = teacherDAO.getTeacherById(teacherDAO.findTeacherIdByUserId(user.getId()));
+                Teacher teacher = Service.getTeacherDAO().getTeacherById(Service.getTeacherDAO().findTeacherIdByUserId(user.getId()));
                 req.getSession().setAttribute("teacher", teacher);
                 return teacherAction;
             }else if(userRole.equals("student")) {
-                Student student = studentDAO.getStudentById(studentDAO.findStudentIdByUserId(user.getId()));
+                Student student = Service.getStudentDAO().getStudentById(Service.getStudentDAO().findStudentIdByUserId(user.getId()));
                 for(Course course : student.getCourses())
                     System.out.println(course.getName());
                 req.getSession().setAttribute("student", student);
                 return studentAction;
             }
 
-            ArrayList<Archive> archives = archiveDAO.getArchive();
+            ArrayList<Archive> archives = Service.getArchiveDAO().getArchive();
             req.getSession().setAttribute("archives", archives);
 
 

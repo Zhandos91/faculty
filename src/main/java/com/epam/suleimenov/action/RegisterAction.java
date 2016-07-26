@@ -13,29 +13,18 @@ import java.sql.SQLException;
 
 public class RegisterAction implements Action {
 
-    private CourseDAO courseDAO;
-    private FacultyDAO facultyDAO;
     private ActionResult studentAction = new ActionResult("student");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-
-
-        try(Connection connection = Service.getConnection()) {
-            courseDAO = Service.getCourseDAO(connection);
-            facultyDAO = Service.getFacultyDAO(connection);
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
 
         String get_course_id = req.getParameter("course_id");
         if(get_course_id != null) {
             int course_id = Integer.parseInt(get_course_id);
             Student student = (Student) req.getSession().getAttribute("student");
 
-            courseDAO.matchCourseAndStudent(facultyDAO.getNextIdBySequence("cs_match"), course_id, student.getId());
-            student.getCourses().add(courseDAO.getCourseById(course_id));
+            Service.getCourseDAO().matchCourseAndStudent(Service.getFacultyDAO().getNextIdBySequence("cs_match"), course_id, student.getId());
+            student.getCourses().add(Service.getCourseDAO().getCourseById(course_id));
         }
         return studentAction;
     }

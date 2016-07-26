@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public interface DAOFactory {
 
     ArchiveDAO getArchiveDAO(Connection connection);
-    Connection getConnection() throws SQLException;
+    Connection getConnection();
     CourseDAO getCourseDAO(Connection connection);
     FacultyDAO getFacultyDAO(Connection connection);
     StudentDAO getStudentDAO(Connection connection);

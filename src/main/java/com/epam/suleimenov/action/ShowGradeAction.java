@@ -18,28 +18,16 @@ import java.util.ArrayList;
 
 public class ShowGradeAction implements Action {
 
-
-    private CourseDAO courseDAO;
-    private StudentDAO studentDAO;
         private ActionResult gradeAction = new ActionResult("grade");
 
         @Override
         public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-            try(Connection connection = Service.getConnection()) {
-                courseDAO = Service.getCourseDAO(connection);
-                studentDAO = Service.getStudentDAO(connection);
-
-
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
-
 
             int course_id = Integer.parseInt(req.getParameter("course_id"));
             Teacher teacher = (Teacher)req.getSession().getAttribute("teacher");
-            Course course = courseDAO.getCourseById(course_id);
+            Course course = Service.getCourseDAO().getCourseById(course_id);
 
-            ArrayList<Student> students = studentDAO.getStudentsByCourseId(course.getId());
+            ArrayList<Student> students = Service.getStudentDAO().getStudentsByCourseId(course.getId());
 
             req.getSession().setAttribute("students", students);
             req.getSession().setAttribute("course", course);
