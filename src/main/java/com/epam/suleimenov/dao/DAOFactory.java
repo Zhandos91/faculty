@@ -13,15 +13,17 @@ public abstract class DAOFactory {
         return null;
     }
 
-    public abstract ArchiveDAO getArchiveDAO(Connection connection);
+    public abstract ArchiveDAO getArchiveDAO();
 
-    public abstract CourseDAO getCourseDAO(Connection connection);
+    public abstract CourseDAO getCourseDAO();
 
-    public abstract FacultyDAO getFacultyDAO(Connection connection);
+    public abstract FacultyDAO getFacultyDAO();
 
-    public abstract StudentDAO getStudentDAO(Connection connection);
+    public abstract StudentDAO getStudentDAO();
 
-    public abstract TeacherDAO getTeacherDAO(Connection connection);
+    public abstract TeacherDAO getTeacherDAO();
 
-    public abstract UserDAO getUserDAO(Connection connection);
+    public abstract UserDAO getUserDAO();
+
+    public abstract void close();
 }

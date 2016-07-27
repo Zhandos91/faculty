@@ -22,7 +22,7 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        service = new Service("connectionPooled");
+        service = new Service();
         actionFactory = new ActionFactory();
     }
 

@@ -17,18 +17,10 @@ import java.util.Properties;
 public class Service implements  AutoCloseable {
 
     private static DAOFactory daoFactory;
-    private static Connection connection;
-    private final String CONNECTION_POOLED = "connectionPooled";
     private final String FACULTY_DAO_FACTORY = "faculty_DAO";
     private final String DAO_PROPERTY = "dao.properties";
 
-    public Service(String connection_type) {
-
-        if(connection_type.equalsIgnoreCase(CONNECTION_POOLED))
-            connection = DBConnectionPool.getConnection();
-        else
-            connection = DBConnection.getConnection();
-
+    public Service() {
 
         Properties properties = new Properties();
         try {
@@ -36,7 +28,7 @@ public class Service implements  AutoCloseable {
             daoFactory = DAOFactory.getDAOFactory(properties.getProperty(FACULTY_DAO_FACTORY));
 
         } catch (IOException e) {
-            System.out.println("Property file is not set or found");
+            System.out.println("Service: property file is not set or found");
             e.printStackTrace();
         }
     }
@@ -45,29 +37,24 @@ public class Service implements  AutoCloseable {
         return daoFactory;
     }
     public static ArchiveDAO getArchiveDAO() {
-        return daoFactory.getArchiveDAO(connection);
+        return daoFactory.getArchiveDAO();
     }
-    public static CourseDAO getCourseDAO() {return  daoFactory.getCourseDAO(connection);}
+    public static CourseDAO getCourseDAO() {return  daoFactory.getCourseDAO();}
     public static FacultyDAO getFacultyDAO() {
-        return  daoFactory.getFacultyDAO(connection);
+        return  daoFactory.getFacultyDAO();
     }
     public static StudentDAO getStudentDAO() {
-        return daoFactory.getStudentDAO(connection);
+        return daoFactory.getStudentDAO();
     }
-    public static TeacherDAO getTeacherDAO() { return  daoFactory.getTeacherDAO(connection);}
+    public static TeacherDAO getTeacherDAO() { return  daoFactory.getTeacherDAO();}
     public static UserDAO getUserDAO() {
-        return  daoFactory.getUserDAO(connection);
+        return  daoFactory.getUserDAO();
     }
 
 
     @Override
     public void close() {
-        if(connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        if (daoFactory != null)
+            daoFactory.close();
     }
 }
