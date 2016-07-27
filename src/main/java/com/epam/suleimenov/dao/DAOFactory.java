@@ -2,9 +2,6 @@ package com.epam.suleimenov.dao;
 
 import java.sql.Connection;
 
-/**
- * Created by Zhandos_Suleimenov on 7/25/2016.
- */
 public abstract class DAOFactory {
 
 

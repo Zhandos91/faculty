@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+<Resource
+        name="jdbc/faculty"
+        auth="Container"
+        type="javax.sql.DataSource"
+        factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+        maxActive="100"
+        maxIdle="30"
+        maxWait="10000"
+        username="system"
+        password="Deathstroke"
+        driverClassName="oracle.jdbc.OracleDriver"
+        url="jdbc:oracle:thin:@localhost:1521/XE" />
+</Context>

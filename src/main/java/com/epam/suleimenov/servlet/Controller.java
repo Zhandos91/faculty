@@ -5,6 +5,7 @@ import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
 import com.epam.suleimenov.connection.DBConnection;
+import com.epam.suleimenov.connection.DBConnectionPool;
 import com.epam.suleimenov.dao.DAOFactory;
 import com.epam.suleimenov.dao.FacultyDAOFactory;
 import com.epam.suleimenov.service.Service;
@@ -38,7 +39,7 @@ public class Controller extends HttpServlet {
         daoFactory = DAOFactory.getDAOFactory(properties.getProperty("dao"));
         service = new Service();
         service.setDaoFactory(daoFactory);
-        connection = DBConnection.getConnection();
+        connection = DBConnectionPool.getConnection();
         service.setConnection(connection);
         actionFactory = new ActionFactory();
     }
