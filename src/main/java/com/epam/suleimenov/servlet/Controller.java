@@ -4,10 +4,7 @@ package com.epam.suleimenov.servlet;
 import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
-import com.epam.suleimenov.connection.DBConnection;
-import com.epam.suleimenov.connection.DBConnectionPool;
 import com.epam.suleimenov.dao.DAOFactory;
-import com.epam.suleimenov.dao.FacultyDAOFactory;
 import com.epam.suleimenov.service.Service;
 
 import javax.servlet.ServletException;
@@ -16,31 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Properties;
 
 public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
     private DAOFactory daoFactory;
     private Service service;
-    private Connection connection;
 
     @Override
     public void init() throws ServletException {
-
-        Properties properties = new Properties();
-        try {
-            properties.load(Controller.class.getClassLoader().getResourceAsStream("dao.properties"));
-        } catch (IOException e) {
-            System.out.println("Property file is not set or found");
-            e.printStackTrace();
-        }
-
-        daoFactory = DAOFactory.getDAOFactory(properties.getProperty("dao"));
-        service = new Service();
-        service.setDaoFactory(daoFactory);
-        connection = DBConnectionPool.getConnection();
-        service.setConnection(connection);
+        service = new Service("connectionPooled");
         actionFactory = new ActionFactory();
     }
 
@@ -67,12 +49,6 @@ public class Controller extends HttpServlet {
             String path = String.format("/WEB-INF/jsp/" + result.getView() + ".jsp");
             req.getRequestDispatcher(path).forward(req, resp);
         }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        DBConnection.closeConnection(connection);
     }
 }
 

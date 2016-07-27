@@ -38,7 +38,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>8082</port>
-                    <!--<hostName>epkzkarw0270.moscow.epam.com</hostName>-->
+                    <hostName>epkzkarw0270.moscow.epam.com</hostName>
                     <path>/</path>
                 </configuration>
             </plugin>
