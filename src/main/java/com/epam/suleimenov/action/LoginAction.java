@@ -6,13 +6,16 @@ package com.epam.suleimenov.action;
 
 import com.epam.suleimenov.dao.*;
 import com.epam.suleimenov.model.*;
+import com.epam.suleimenov.service.ArchiveService;
 import com.epam.suleimenov.service.Service;
+import com.epam.suleimenov.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LoginAction implements Action {
 
@@ -23,26 +26,26 @@ public class LoginAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+        UserService userService = new UserService();
+        ArchiveService archiveService = new ArchiveService();
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String userRole = req.getParameter("userRole");
 
-        if (Service.getUserDAO().checkUser(login, password, userRole)) {
-            User user = Service.getUserDAO().findUserByEmail(login);
+        if (userService.checkUser(login, password, userRole)) {
+            User user = userService.findUser(login);
             req.getSession().setAttribute("user", user);
-            if(userRole.equals("teacher")) {
-                Teacher teacher = Service.getTeacherDAO().getTeacherById(Service.getTeacherDAO().findTeacherIdByUserId(user.getId()));
-                req.getSession().setAttribute("teacher", teacher);
+            if(userRole.equals("TEACHER")) {
+                req.getSession().setAttribute("teacher", user);
                 return teacherAction;
-            }else if(userRole.equals("student")) {
-                Student student = Service.getStudentDAO().getStudentById(Service.getStudentDAO().findStudentIdByUserId(user.getId()));
-                req.getSession().setAttribute("student", student);
+            }else if(userRole.equals("STUDENT")) {
+                req.getSession().setAttribute("student", user);
                 return studentAction;
+            }else{
+                List<Archive> archives = archiveService.getAllArchives();
+                req.getSession().setAttribute("archives", archives);
             }
-
-            ArrayList<Archive> archives = Service.getArchiveDAO().getArchive();
-            req.getSession().setAttribute("archives", archives);
-
             return adminAction;
         } else {
             req.setAttribute("loginError", "login or password incorrect");

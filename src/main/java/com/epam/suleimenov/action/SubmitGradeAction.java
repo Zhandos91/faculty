@@ -1,16 +1,14 @@
 package com.epam.suleimenov.action;
 
-import com.epam.suleimenov.dao.*;
+import com.epam.suleimenov.model.Archive;
 import com.epam.suleimenov.model.Course;
-import com.epam.suleimenov.model.Student;
-import com.epam.suleimenov.model.Teacher;
-import com.epam.suleimenov.service.Service;
-
+import com.epam.suleimenov.model.User;
+import com.epam.suleimenov.service.ArchiveService;
+import com.epam.suleimenov.service.CourseService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 public class SubmitGradeAction implements Action {
@@ -21,12 +19,15 @@ public class SubmitGradeAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
+        ArchiveService archiveService = new ArchiveService();
+        CourseService courseService = new CourseService();
+
         Course course = (Course) req.getSession().getAttribute("course");
-        Teacher teacher = (Teacher) req.getSession().getAttribute("teacher");
-        ArrayList<Student> students = (ArrayList<Student>) req.getSession().getAttribute("students");
+        User teacher = (User) req.getSession().getAttribute("teacher");
+        List<User> students = (List<User>) req.getSession().getAttribute("students");
 
         if (students != null && students.size() > 0) {
-            for (Student student : students) {
+            for (User student : students) {
                 String grade = req.getParameter(Integer.toString(student.getId()));
                 if(grade == null || grade.equals("")) {
                     req.setAttribute("gradeError", "All grades must be entered!" );
@@ -38,12 +39,19 @@ public class SubmitGradeAction implements Action {
                 }
 
             }
-            for (Student student : students) {
+            for (User student : students) {
                 String grade = req.getParameter(Integer.toString(student.getId()));
-                Service.getArchiveDAO().addToArchive(Service.getFacultyDAO().getNextIdBySequence("archive"), student.getId(), course.getId(), Integer.parseInt(grade));
+                Archive archive = new Archive();
+                archive.setCourse(course);
+                archive.setDate(new Date());
+                archive.setGrade(Archive.Grade.valueOf(grade));
+                archive.setStudent(student);
+                archive.setTeacher(teacher);
+                archiveService.createArchive(archive);
             }
-            Service.getCourseDAO().changeCourseStatus(course.getId(), "archived");
-            teacher = Service.getTeacherDAO().getTeacherById(teacher.getId());
+            course.setStatus("archived");
+            courseService.updateCourse(course);
+//            teacher = Service.getTeacherDAO().getTeacherById(teacher.getId());
             req.getSession().setAttribute("teacher", teacher);
         }
         return teacherAction;

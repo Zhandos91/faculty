@@ -19,9 +19,9 @@
         <text>User: </text>
 
         <select name="userRole">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="admin">Admin</option>
+            <option value="STUDENT">Student</option>
+            <option value="TEACHER">Teacher</option>
+            <option value="ADMIN">Admin</option>
         </select>
         <br>
         Login:    <input type="text" name="login"/><br>

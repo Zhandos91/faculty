@@ -23,7 +23,7 @@
         </tr>
         <c:forEach items="${sessionScope.students}" var="student" varStatus="loop">
             <tr>
-                <td> ${student.getName()} ${student.getSurname()}</td>
+                <td> ${student.getFirstName()} ${student.getLastName()}</td>
                 <td><input type="text" name="${student.getId()}"/></td>
             </tr>
 

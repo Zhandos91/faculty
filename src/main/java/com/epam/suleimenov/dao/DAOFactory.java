@@ -1,29 +1,21 @@
 package com.epam.suleimenov.dao;
 
-import java.sql.Connection;
-
 public abstract class DAOFactory {
-
 
     public static DAOFactory getDAOFactory(String whichFactory) {
 
-        if(whichFactory.equalsIgnoreCase("facultyDAO"))
-            return new FacultyDAOFactory();
+        DAOFactory daoFactory;
 
-        return null;
+        if (whichFactory.equalsIgnoreCase("facultyDAO")) {
+            daoFactory = new FacultyDAOFactory();
+            return daoFactory;
+        } else {
+            throw new DAOException("DAOFactory is not found!");
+        }
     }
 
-    public abstract ArchiveDAO getArchiveDAO();
-
-    public abstract CourseDAO getCourseDAO();
-
-    public abstract FacultyDAO getFacultyDAO();
-
-    public abstract StudentDAO getStudentDAO();
-
-    public abstract TeacherDAO getTeacherDAO();
-
-    public abstract UserDAO getUserDAO();
+    public abstract <T> GenericDAO<T> createDAO(Class<T> myClass);
 
     public abstract void close();
+
 }

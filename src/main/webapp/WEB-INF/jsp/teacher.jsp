@@ -15,7 +15,7 @@
 
 </head>
 <body>
-<h3>Hello Prof.${teacher.getName()} </h3>
+<h3>Hello Prof.${teacher.getFirstName()} </h3>
 
 <br/>
 
@@ -26,7 +26,6 @@
         <input type="hidden" name="course_id" value=${course.getId()} />
         <button type="submit">${course.getName()}</button>
     </form>
-    <%--&nbsp;--%>
 
     <c:if test="${ course.getStatus() == 'open' }">
     <form method="GET" action="gradecourse">

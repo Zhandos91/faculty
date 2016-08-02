@@ -1,43 +1,46 @@
 package com.epam.suleimenov.action;
 
-import com.epam.suleimenov.dao.CourseDAO;
-import com.epam.suleimenov.dao.FacultyDAO;
 import com.epam.suleimenov.model.Course;
-import com.epam.suleimenov.model.Teacher;
-import com.epam.suleimenov.service.Service;
+import com.epam.suleimenov.model.User;
+import com.epam.suleimenov.service.CourseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.*;
 
 public class AddCourseAction implements Action {
 
-        private ActionResult addCourseAgain = new ActionResult("addCourse");
-        private ActionResult teacherAction = new ActionResult("teacher");
+    private ActionResult addCourseAgain = new ActionResult("addCourse");
+    private ActionResult teacherAction = new ActionResult("teacher");
 
-        @Override
-        public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+    @Override
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
-            String name = req.getParameter("courseName");
-            String description = req.getParameter("description");
-            Teacher teacher = (Teacher) req.getSession().getAttribute("teacher");
+        CourseService courseService = new CourseService();
 
-            if(name.equals("")){
-                req.setAttribute("courseAddError", "Course name must be entered!!!");
-                return addCourseAgain;
-            }
+        String name = req.getParameter("courseName");
+        String description = req.getParameter("description");
+        User teacher = (User) req.getSession().getAttribute("teacher");
 
-                Course course = new Course();
-                course.setId(Service.getFacultyDAO().getNextIdBySequence("course"));
-                course.setName(name);
-                course.setDescription(description);
-                course.setTeacherId(teacher.getId());
-                course.setStatus("open");
-                Service.getCourseDAO().addCourse(course);
-                teacher.getCourses().add(course);
-
-            return teacherAction;
+        if (name.equals("")) {
+            req.setAttribute("courseAddError", "Course name must be entered!!!");
+            return addCourseAgain;
         }
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setStatus("open");
+        List<User> teachers = new ArrayList<User>();
+        System.out.println("Teacher: " + teacher);
+
+        teachers.add(teacher);
+        course.setTeachers(teachers);
+        course.setStudents(new ArrayList<User>());
+        courseService.createCourse(course);
+        teacher.getCourses().add(course);
+
+        return teacherAction;
+    }
 }
 

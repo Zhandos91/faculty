@@ -25,9 +25,9 @@
     </tr>
     <c:forEach items="${sessionScope.archives}" var="archive">
         <tr>
-            <td>${archive.getTeacher()}</td>
-            <td>${archive.getStudentName()}</td>
-            <td>${archive.getCourseName()}</td>
+            <td>${archive.getTeacher().getFirstName()} ${archive.getTeacher().getLastName()}</td>
+            <td>${archive.getStudent().getFirstName()} ${archive.getStudent().getLastName()}</td>
+            <td>${archive.getCourse().getName()}</td>
             <td>${archive.getGrade()}</td>
             <td>${archive.getDate()}</td>
         </tr>

@@ -14,7 +14,7 @@
 </head>
 <body>
 
-Hello ${student.getName()} ${student.getSurname()}
+Hello ${student.getFirstName()} ${student.getLastName()}
 <br/>
 
 <c:forEach items="${student.getCourses()}" var="course">

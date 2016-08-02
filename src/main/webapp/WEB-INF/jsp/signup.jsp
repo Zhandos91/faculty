@@ -5,14 +5,7 @@
   Time: 11:40 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Zhandos_Suleimenov
-  Date: 7/14/2016
-  Time: 12:12 PM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -27,8 +20,8 @@
         <text>User: </text>
 
         <select name="userRole">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
+            <option value="STUDENT">Student</option>
+            <option value="TEACHER">Teacher</option>
         </select>
         <br>
         Name: <input type="text" name="name" /><br/>

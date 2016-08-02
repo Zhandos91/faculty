@@ -24,7 +24,7 @@ public class Service implements  AutoCloseable {
 
         Properties properties = new Properties();
         try {
-            properties.load(Controller.class.getClassLoader().getResourceAsStream(DAO_PROPERTY));
+            properties.load(Service.class.getClassLoader().getResourceAsStream(DAO_PROPERTY));
             daoFactory = DAOFactory.getDAOFactory(properties.getProperty(FACULTY_DAO_FACTORY));
 
         } catch (IOException e) {
@@ -36,21 +36,6 @@ public class Service implements  AutoCloseable {
     public static DAOFactory getDAOFactory() {
         return daoFactory;
     }
-    public static ArchiveDAO getArchiveDAO() {
-        return daoFactory.getArchiveDAO();
-    }
-    public static CourseDAO getCourseDAO() {return  daoFactory.getCourseDAO();}
-    public static FacultyDAO getFacultyDAO() {
-        return  daoFactory.getFacultyDAO();
-    }
-    public static StudentDAO getStudentDAO() {
-        return daoFactory.getStudentDAO();
-    }
-    public static TeacherDAO getTeacherDAO() { return  daoFactory.getTeacherDAO();}
-    public static UserDAO getUserDAO() {
-        return  daoFactory.getUserDAO();
-    }
-
 
     @Override
     public void close() {

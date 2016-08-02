@@ -14,6 +14,7 @@ public class DBConnection {
     private static String dbUser;
     private static String dbPassword;
     private static String dbDriver;
+    public static String dbName;
 
     static {
         Properties properties = new Properties();
@@ -24,6 +25,7 @@ public class DBConnection {
             dbPath = properties.getProperty("db_path");
             dbUser = properties.getProperty("db_user");
             dbPassword = properties.getProperty("db_password");
+            dbName=properties.getProperty("db_name");
 
         } catch (IOException e) {
             System.out.println("Property file is not set or found");
@@ -57,5 +59,9 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getDBName() {
+        return dbName;
     }
 }
