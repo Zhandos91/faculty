@@ -31,7 +31,7 @@ public class LoginAction implements Action {
 
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        String userRole = req.getParameter("userRole");
+        String userRole = req.getParameter("user_role");
 
         if (userService.checkUser(login, password, userRole)) {
             User user = userService.findUser(login);

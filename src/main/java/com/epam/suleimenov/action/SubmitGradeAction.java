@@ -36,7 +36,7 @@ public class SubmitGradeAction implements Action {
                     return gradeAgain;
                 } else if (!(grade.equals(Archive.Grade.valueOf("A").toString()) || grade.equals(Archive.Grade.valueOf("B").toString()) || grade.equals(Archive.Grade.valueOf("C").toString())
                         || grade.equals(Archive.Grade.valueOf("D").toString()) || grade.equals(Archive.Grade.valueOf("F").toString()))) {
-                    req.setAttribute("gradeError", "Only letter grades are allowed for grade!");
+                    req.setAttribute("gradeError", "Only letter grades are allowed for grade {A, B, C, D, E, F}");
                     return gradeAgain;
                 }
 

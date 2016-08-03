@@ -8,60 +8,65 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Teacher Page</title>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h3>Hello Prof.${teacher.getFirstName()} </h3>
+<div class="container">
 
-<br/>
+
+<div class="page-header"><h2>Hello, Prof.${teacher.getLastName()}!</h2></div>
+
+<h2><ul>Archived courses:</ul></h2>
 
 <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
-    <form method="GET" action="showcourse" style="float:left;margin-right:30px">
-
-        <input type="hidden" name="course_id" value=${course.getId()} />
-        <button type="submit">${course.getName()}</button>
-    </form>
-
-    <c:if test="${ course.getStatus() == 'open' }">
-    <form method="GET" action="gradecourse">
-        <input type="hidden" name="course_id" value=${course.getId()} />
-        <button type="submit">grade1</button>
-
-    </form>
-    </c:if>
-
     <c:if test="${ course.getStatus() == 'archived'}">
-        <form method="GET" action="gradecourse">
-            <input type="hidden" name="course_id" value=${course.getId()} />
-            <button type="submit" style="display: none">grade2</button>
-
-        </form>
+        <h2><a href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}">${course.getName()}</a></h2>
     </c:if>
 
-<br/><br/>
 </c:forEach>
 
+    <h2><ul>Open courses:</ul></h2>
+    <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
-<br/>
-<br/>
-<form action="addcourse" method="GET">
 
-    <button type="submit">Add course</button>
+        <c:if test="${ course.getStatus() == 'open' }">
+
+            <form class="form-inline" role="form" method="GET" action="gradecourse">
+                <div class="form-group">
+
+                    <label class="control-label"><a href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}">${course.getName()}</a></label>
+                <input class="form-control" type="hidden" name="course_id" value=${course.getId()} />
+                <button class="btn btn-default btn-sm" type="submit">grade</button>
+                </div>
+            </form>
+        </c:if>
+
+        <br/><br/>
+    </c:forEach>
+
+
+
+
+
+<br/><br/>
+<form role="form" action="addcourse" method="GET">
+
+    <button class="btn btn-primary" type="submit">Add courses</button>
 </form>
 
-<br/>
-<br/>
-<h1>
-    <a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a>
-</h1>
+<br/><br/>
+<h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2>
 
 
-
+</div>
 </body>
 </html>
 

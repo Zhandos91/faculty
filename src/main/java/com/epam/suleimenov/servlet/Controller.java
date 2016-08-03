@@ -27,10 +27,10 @@ public class Controller extends HttpServlet {
     public void init() throws ServletException {
         service = new Service();
         actionFactory = new ActionFactory();
-//        new ArchiveService().clearArchive();
-//        new CourseService().clearCourseToUser();
-//        new CourseService().clearCourses();
-//        new UserService().clearUsers();
+        new ArchiveService().clearArchive();
+        new CourseService().clearCourseToUser();
+        new CourseService().clearCourses();
+        new UserService().clearUsers();
     }
 
     @Override

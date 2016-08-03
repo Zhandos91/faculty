@@ -8,37 +8,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Student Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div class="container">
+    <div class="page-header"><h2>Hello, ${student.getFirstName()} ${student.getLastName()}!</h2></div>
 
-Hello ${student.getFirstName()} ${student.getLastName()}
-<br/>
 
 <c:forEach items="${student.getCourses()}" var="course">
-<form method="GET" action="showcourse">
+<form role="form" method="GET" action="showcourse">
     <input name="course_id" type=hidden value=${course.getId()} />
-    <button type="submit">${course.getName()}</button>
+    <button class="btn btn-default" type="submit">${course.getName()}</button>
 </form>
-
-
-    <br/>
-
 
 
 </c:forEach>
 
-<br/>
+<br/><br/>
 
-<form action="register" method="GET">
-<button>Register For Course</button>
+<form role="form" action="register" method="GET">
+<button class="btn btn-primary" type="submit">Register For Courses</button>
 </form>
-<br/>
-<h1>
-    <a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a>
-</h1>
 
+    <br/><br/>
+
+    <h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2>
+
+
+</div>
 </body>
 </html>

@@ -18,37 +18,39 @@ public class SignupAction implements Action {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
         UserService userService = new UserService();
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
+        String first_name = req.getParameter("first_name");
+        String last_name = req.getParameter("last_name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        String confirm_password = req.getParameter("confirm_password");
-        String userRole = req.getParameter("userRole");
+        String retyped_password = req.getParameter("retyped_password");
+        String user_role = req.getParameter("user_role");
+
+        System.out.println(first_name + " " + last_name + " " + email + " " + password + " " + retyped_password + " " + user_role );
 
         if (userService.findUser(email) != null) {
             req.setAttribute("signupError", "The email is already used, try different one!");
             return signupAgain;
-        } else if (!password.equals(confirm_password)) {
+        } else if (!password.equals(retyped_password)) {
             req.setAttribute("signupError", "Retyped password is not matched!");
             return signupAgain;
-        } else if (name.equals("") || surname.equals("") || email.equals("") || password.equals("")) {
+        } else if (first_name.equals("") || last_name.equals("") || email.equals("") || password.equals("")) {
             req.setAttribute("signupError", "All fields MUST be filled!");
             return signupAgain;
         } else {
             User user = new User();
-            user.setFirstName(name);
-            user.setLastName(surname);
+            user.setFirstName(first_name);
+            user.setLastName(last_name);
             user.setEmail(email);
             user.setPassword(password);
-            user.setUserRole(User.Role.valueOf(userRole));
+            user.setUserRole(User.Role.valueOf(user_role));
             user.setCourses(new ArrayList<Course>());
             userService.createUser(user);
 
-            if(userRole.equals("TEACHER")) {
+            if(user_role.equals("TEACHER")) {
                 req.getSession().setAttribute("teacher", user);
                 return teacherAction;
 
-            }else if(userRole.equals("STUDENT")) {
+            }else if(user_role.equals("STUDENT")) {
                 req.getSession().setAttribute("student", user);
                 return studentAction;
             }

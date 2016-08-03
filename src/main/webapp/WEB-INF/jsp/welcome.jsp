@@ -17,7 +17,7 @@
 <h1 align="center"> Welcome To Faculty Website! </h1>
 <br/>
 <h2>
-    News users, plese, sign up <a href="${pageContext.request.contextPath}/do/signup">HERE</a>
+    News users, please, sign up <a href="${pageContext.request.contextPath}/do/signup">HERE</a>
 <br/><br/>
     Returning users, please, log in <a href="${pageContext.request.contextPath}/do/login">HERE</a>
 </h2>

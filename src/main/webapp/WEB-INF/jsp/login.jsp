@@ -7,28 +7,45 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <title>Login Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div>
+<div class="container">
+    <form class="form-inline" role="form" action="login" focus="login" method="post">
 
-    <form action="login" focus="login" method="post">
-        <text>User: </text>
+        <div class="page-header"><h2>Login Information</h2></div>
 
-        <select name="userRole">
-            <option value="STUDENT">Student</option>
-            <option value="TEACHER">Teacher</option>
-            <option value="ADMIN">Admin</option>
-        </select>
-        <br>
-        Login:    <input type="text" name="login"/><br>
-        Password: <input type="password" name="password"/><br>
-        <button type="submit">Login</button>
+        <div class="form-group">
+            <label class="control-label">User Role:</label>
+            <select class="control-panel" name="user_role">
+                <option>ADMIN</option>
+                <option>STUDENT</option>
+                <option>TEACHER</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Login:</label>
+            <input type="text" class="form-control" name="login" placeholder="Enter login">
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Password:</label>
+            <input class="form-control" type="password" name="password" placeholder="Enter password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
         <div style="color:red">${loginError}</div>
     </form>
+
 </div>
 
 </body>

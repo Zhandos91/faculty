@@ -8,32 +8,88 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <title>Signup Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div>
+<div class="container">
+    <%--<h2 class="text-center">Horizontal form</h2>--%>
+    <form class="form-horizontal" role="form" action="signup" method="post">
 
-    <form action="signup" focus="login" method="post">
-        <text>User: </text>
+        <div class="page-header"><h2>User Information</h2></div>
 
-        <select name="userRole">
-            <option value="STUDENT">Student</option>
-            <option value="TEACHER">Teacher</option>
-        </select>
-        <br>
-        Name: <input type="text" name="name" /><br/>
-        Surname: <input type="text" name="surname"/><br/>
-        Email: <input type="text" name="email"/><br/>
+        <div class="form-group">
+            <label class="control-label col-md-2">User role:</label>
+            <div class="col-md-10">
+                <select class="control-panel" name="user_role">
+                    <option>STUDENT</option>
+                    <option>TEACHER</option>
+                </select>
+            </div>
+        </div>
 
-        Password: <input type="password" name="password"/><br>
-        Confirm the password:  <input type="password" name="confirm_password"/><br>
-        <button type="submit">Signup</button>
+        <div class="form-group">
+            <label class="control-label col-md-2">First Name:</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="first_name" placeholder="Enter First Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Last Name:</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="last_name" placeholder="Enter Last Name">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Email:</label>
+            <div class="col-md-10">
+                <input type="email" class="form-control" name="email" placeholder="Enter Email">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Password:</label>
+            <div class="col-md-10">
+                <input type="password" class="form-control" name="password" placeholder="Enter Password">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Confirm Password:</label>
+            <div class="col-md-10">
+                <input type="password" class="form-control" name="retyped_password" placeholder="Retype Password">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+
         <div style="color:red">${signupError}</div>
     </form>
 </div>
 
+
 </body>
 </html>
+
+
+<%--Password: <input type="password" name="password"/><br>--%>
+<%--Confirm the password:  <input type="password" name="confirm_password"/><br>--%>
+
+
+<%--</form>--%>
+<%--</div>--%>
