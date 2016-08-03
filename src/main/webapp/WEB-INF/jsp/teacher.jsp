@@ -20,51 +20,49 @@
 <body>
 <div class="container">
 
+    <div class="page-header"><label><h2>Hello, Prof.${teacher.getLastName()}!</h2></label> <label
+            class="col-md-offset-8"><h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2></label>
+    </div>
 
-<div class="page-header"><h2>Hello, Prof.${teacher.getLastName()}!</h2></div>
+    <h2 class="bg-danger">Archived courses:</h2>
 
-<h2><ul>Archived courses:</ul></h2>
+    <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
-<c:forEach items="${sessionScope.teacher.courses}" var="course">
+        <c:if test="${ course.getStatus() == 'archived'}">
+            <div class="form-group">
+                <label class="control-label col-md-offset-1"><a
+                        href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}" >${course.getName()}</a></label>
+            </div>
+        </c:if>
 
-    <c:if test="${ course.getStatus() == 'archived'}">
-        <h2><a href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}">${course.getName()}</a></h2>
-    </c:if>
+    </c:forEach>
 
-</c:forEach>
-
-    <h2><ul>Open courses:</ul></h2>
+    <br/><br/>
+    <h2 class="bg-success">Open courses:</h2>
     <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
 
         <c:if test="${ course.getStatus() == 'open' }">
 
-            <form class="form-inline" role="form" method="GET" action="gradecourse">
+            <form class="form-horizontal" role="form" method="GET" action="gradecourse">
                 <div class="form-group">
 
-                    <label class="control-label"><a href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}">${course.getName()}</a></label>
-                <input class="form-control" type="hidden" name="course_id" value=${course.getId()} />
-                <button class="btn btn-default btn-sm" type="submit">grade</button>
+                    <label class="control-label col-md-2"><a href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}">${course.getName()}</a></label>
+                    <input class="form-control" type="hidden" name="course_id" value=${course.getId()} />
+                    <button class="btn btn-default btn-sm col-md-1" type="submit">grade</button>
                 </div>
             </form>
         </c:if>
 
-        <br/><br/>
+
     </c:forEach>
 
 
+    <br/><br/>
+    <form role="form" action="addcourse" method="GET">
 
-
-
-<br/><br/>
-<form role="form" action="addcourse" method="GET">
-
-    <button class="btn btn-primary" type="submit">Add courses</button>
-</form>
-
-<br/><br/>
-<h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2>
-
+        <button class="btn btn-primary" type="submit">Add courses</button>
+    </form>
 
 </div>
 </body>
