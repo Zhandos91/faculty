@@ -35,9 +35,8 @@ public class AddCourseAction implements Action {
         System.out.println("Teacher: " + teacher);
 
         teachers.add(teacher);
-        course.setTeachers(teachers);
-        course.setStudents(new ArrayList<User>());
         courseService.createCourse(course);
+        courseService.addCourseToUser(course, teacher, User.Role.valueOf("TEACHER").toString());
         teacher.getCourses().add(course);
 
         return teacherAction;

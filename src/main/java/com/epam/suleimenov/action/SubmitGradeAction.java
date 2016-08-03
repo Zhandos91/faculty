@@ -5,6 +5,8 @@ import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.ArchiveService;
 import com.epam.suleimenov.service.CourseService;
+import com.epam.suleimenov.service.UserService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -29,12 +31,12 @@ public class SubmitGradeAction implements Action {
         if (students != null && students.size() > 0) {
             for (User student : students) {
                 String grade = req.getParameter(Integer.toString(student.getId()));
-                if(grade == null || grade.equals("")) {
-                    req.setAttribute("gradeError", "All grades must be entered!" );
+                if (grade == null || grade.equals("")) {
+                    req.setAttribute("gradeError", "All grades must be entered!");
                     return gradeAgain;
-                }
-                else if(!grade.matches("\\d+")) {
-                    req.setAttribute("gradeError", "Only whole numbers are allowed for grade!");
+                } else if (!(grade.equals(Archive.Grade.valueOf("A").toString()) || grade.equals(Archive.Grade.valueOf("B").toString()) || grade.equals(Archive.Grade.valueOf("C").toString())
+                        || grade.equals(Archive.Grade.valueOf("D").toString()) || grade.equals(Archive.Grade.valueOf("F").toString()))) {
+                    req.setAttribute("gradeError", "Only letter grades are allowed for grade!");
                     return gradeAgain;
                 }
 
@@ -52,6 +54,7 @@ public class SubmitGradeAction implements Action {
             course.setStatus("archived");
             courseService.updateCourse(course);
 //            teacher = Service.getTeacherDAO().getTeacherById(teacher.getId());
+            teacher.setCourses(courseService.findCoursesByUser(teacher));
             req.getSession().setAttribute("teacher", teacher);
         }
         return teacherAction;

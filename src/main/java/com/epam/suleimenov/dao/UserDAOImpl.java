@@ -124,7 +124,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User update(User user) {
-        String sql = "UPDATE " + DBConnection.getDBName() + ".USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, USER_ROLE = ?, PASSWORD = ?";
+        String sql = "UPDATE " + DBConnection.getDBName() + ".USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, USER_ROLE = ?, PASSWORD = ? WHERE USER_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getFirstName());
@@ -132,6 +132,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getUserRole().toString());
             preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setInt(6, user.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

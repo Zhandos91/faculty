@@ -5,7 +5,11 @@ import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
 import com.epam.suleimenov.dao.DAOFactory;
+import com.epam.suleimenov.dao.UserDAO;
+import com.epam.suleimenov.service.ArchiveService;
+import com.epam.suleimenov.service.CourseService;
 import com.epam.suleimenov.service.Service;
+import com.epam.suleimenov.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,13 +21,16 @@ import java.sql.Connection;
 public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
-    private DAOFactory daoFactory;
     private Service service;
 
     @Override
     public void init() throws ServletException {
         service = new Service();
         actionFactory = new ActionFactory();
+//        new ArchiveService().clearArchive();
+//        new CourseService().clearCourseToUser();
+//        new CourseService().clearCourses();
+//        new UserService().clearUsers();
     }
 
     @Override

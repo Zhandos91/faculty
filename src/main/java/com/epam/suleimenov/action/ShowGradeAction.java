@@ -20,8 +20,9 @@ public class ShowGradeAction implements Action {
             int course_id = Integer.parseInt(req.getParameter("course_id"));
 //            User teacher = (User)req.getSession().getAttribute("teacher");
             Course course = courseService.findCourse(course_id);
-
+System.out.println("Course:" + course);
             List<User> students = courseService.findStudentsByCourse(course);
+            System.out.println("Size:" + students.size());
             req.getSession().setAttribute("students", students);
             req.getSession().setAttribute("course", course);
            return  gradeAction;

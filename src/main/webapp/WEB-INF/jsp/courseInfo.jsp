@@ -14,6 +14,8 @@
 </h3>
 <h3><u>Course:</u> ${sessionScope.course.getName()} </h3>
 
+<h3><u>Status:</u> ${sessionScope.course.getStatus()} </h3>
+
 <h3><u>Description:</u> ${sessionScope.course.getDescription()} </h3>
 
 <h3><u>Students:</u> <br/><br/>

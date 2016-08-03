@@ -30,7 +30,7 @@
     <c:if test="${ course.getStatus() == 'open' }">
     <form method="GET" action="gradecourse">
         <input type="hidden" name="course_id" value=${course.getId()} />
-        <button type="submit">grade</button>
+        <button type="submit">grade1</button>
 
     </form>
     </c:if>
@@ -38,7 +38,7 @@
     <c:if test="${ course.getStatus() == 'archived'}">
         <form method="GET" action="gradecourse">
             <input type="hidden" name="course_id" value=${course.getId()} />
-            <button type="submit" style="display: none">grade</button>
+            <button type="submit" style="display: none">grade2</button>
 
         </form>
     </c:if>

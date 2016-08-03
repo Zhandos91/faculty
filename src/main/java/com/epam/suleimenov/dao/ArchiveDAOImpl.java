@@ -38,11 +38,14 @@ public class ArchiveDAOImpl implements ArchiveDAO {
         String sql = "INSERT INTO " + DBConnection.getDBName() + ".ARCHIVE(STUDENT_ID, COURSE_ID, GRADE, GRADING_DATE, TEACHER_ID) VALUES(?, ?, ?, ?, ?)";
         SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+        log.debug("TO_DATE(\'" + date_formatter.format(new Date()) + "\',\'yyyy-mm-dd hh:mi:ss\')");
+
+        log.debug("create archive {}", archive);
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"ARCHIVE_ID"})) {
             preparedStatement.setInt(1, archive.getStudent().getId());
             preparedStatement.setInt(2, archive.getCourse().getId());
             preparedStatement.setString(3, archive.getGrade().toString());
-            preparedStatement.setString(4, "TO_DATE(\'" + date_formatter.format(new Date()) + "\',\'yyyy-mm-dd hh:mi:ss\')");
+            preparedStatement.setDate(4, new java.sql.Date(archive.getDate().getTime()));
             preparedStatement.setInt(5, archive.getTeacher().getId());
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -120,7 +123,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
 
     @Override
     public Archive update(Archive archive) {
-        String sql = "UPDATE " + DBConnection.getDBName() + ".ARCHIVE SET STUDENT_ID = ?, COURSE_ID = ?, GRADE = ?, GRADING_DATE = ?, TEACHER_ID = ?";
+        String sql = "UPDATE " + DBConnection.getDBName() + ".ARCHIVE SET STUDENT_ID = ?, COURSE_ID = ?, GRADE = ?, GRADING_DATE = ?, TEACHER_ID = ? WHERE ARCHIVE_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, archive.getStudent().getId());
@@ -128,6 +131,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
             preparedStatement.setString(3, archive.getGrade().toString());
             preparedStatement.setDate(4, new java.sql.Date(archive.getDate().getTime()));
             preparedStatement.setInt(5, archive.getTeacher().getId());
+            preparedStatement.setInt(6, archive.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

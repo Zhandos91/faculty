@@ -18,7 +18,7 @@ public class RegisterAction implements Action {
         if(get_course_id != null) {
            Course course = courseService.findCourse(Integer.parseInt(get_course_id));
             User student = (User) req.getSession().getAttribute("student");
-            courseService.addCourseToUser(course, student, User.Role.valueOf("student").toString());
+            courseService.addCourseToUser(course, student, User.Role.valueOf("STUDENT").toString());
             student.getCourses().add(course);
         }
         return studentAction;

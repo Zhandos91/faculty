@@ -84,8 +84,6 @@ public class CourseDAOImpl implements CourseDAO {
                 course.setName(resultSet.getString("course_name"));
                 course.setDescription(resultSet.getString("course_description"));
                 course.setStatus(resultSet.getString("course_status"));
-                course.setStudents(findStudentsByCourseId(course.getId()));
-                course.setTeachers(findTeachersByCourseId(course.getId()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,8 +104,6 @@ public class CourseDAOImpl implements CourseDAO {
                 course.setName(resultset.getString("course_name"));
                 course.setDescription(resultset.getString("course_description"));
                 course.setStatus(resultset.getString("course_status"));
-                course.setStudents(findStudentsByCourseId(course.getId()));
-                course.setTeachers(findTeachersByCourseId(course.getId()));
                 courses.add(course);
             }
 
@@ -120,12 +116,13 @@ public class CourseDAOImpl implements CourseDAO {
 
     public Course update(Course course) {
 
-        String sql = "UPDATE " + DBConnection.getDBName() + ".COURSES SET COURSE_NAME = ?, COURSE_DESCRIPTION = ?, COURSE_STATUS = ?";
+        String sql = "UPDATE " + DBConnection.getDBName() + ".COURSES SET COURSE_NAME = ?, COURSE_DESCRIPTION = ?, COURSE_STATUS = ? WHERE COURSE_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, course.getName());
             preparedStatement.setString(2, course.getDescription());
             preparedStatement.setString(3, course.getStatus());
+            preparedStatement.setInt(4, course.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -176,12 +173,10 @@ public class CourseDAOImpl implements CourseDAO {
             ResultSet resultset = preparedStatement.executeQuery();
             while (resultset.next()) {
                 Course course = new Course();
-                course.setId(resultset.getInt("id"));
+                course.setId(resultset.getInt("course_id"));
                 course.setName(resultset.getString("course_name"));
                 course.setDescription(resultset.getString("course_description"));
                 course.setStatus(resultset.getString("course_status"));
-                course.setStudents(findStudentsByCourseId(course.getId()));
-                course.setTeachers(findTeachersByCourseId(course.getId()));
                 courses.add(course);
             }
 
