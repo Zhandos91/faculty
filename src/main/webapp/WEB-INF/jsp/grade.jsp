@@ -18,25 +18,25 @@
 </head>
 <body>
 <div class="container">
-    <div class="page-header">Grade Course</div>
-<h2><u>CourseName:</u> ${sessionScope.course.getName()} </h2> <br/>
+    <div class="page-header"><h2>Grade Course</h2></div>
+<h3 class="bg-success">CourseName: ${sessionScope.course.getName()} </h3> <br/>
 
 <form method="POST" action="submitgrade">
-    <table>
-        <tr>
+    <table class="table">
+        <tr class="bg-info">
             <th>Student</th>
             <th>Grade</th>
         </tr>
         <c:forEach items="${sessionScope.students}" var="student" varStatus="loop">
             <tr>
                 <td> ${student.getFirstName()} ${student.getLastName()}</td>
-                <td><input type="text" name="${student.getId()}"/></td>
+                <td><input type="text" name="${student.getId()}" placeholder="Enter Grade"/></td>
             </tr>
 
         </c:forEach>
     </table>
     <br/>
-    <button type="submit">GRADE</button>
+    <button class="btn btn-primary" type="submit">grade</button>
     <div style="color:red">${gradeError}</div>
 </form>
 

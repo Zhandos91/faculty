@@ -19,7 +19,7 @@
 <body>
 <div class="container">
 
-    <div class="page-header"><h2>List Of Courses</h2></div>
+    <div class="page-header"><h3>List Of Courses</h3></div>
     <form role="form" action="register" method="POST">
         <c:forEach items="${courses}" var="course">
             <div class="radio">
@@ -27,7 +27,7 @@
             </div>
         </c:forEach>
 
-        <button class="btn btn-primary" type="submit">Register</button>
+        <button class="btn btn-primary btn-sm" type="submit">Register</button>
     </form>
 
 

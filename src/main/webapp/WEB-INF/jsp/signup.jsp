@@ -16,11 +16,18 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- FormValidation plugin and the class supports validating Bootstrap form -->
+    <script src="/vendor/formvalidation/dist/js/formValidation.min.js"></script>
+    <script src="/vendor/formvalidation/dist/js/framework/bootstrap.min.js"></script>
 </head>
 <body>
 
 <div class="container">
-    <%--<h2 class="text-center">Horizontal form</h2>--%>
+
     <form class="form-horizontal" role="form" action="signup" method="post">
 
         <div class="page-header"><h2>User Information</h2></div>

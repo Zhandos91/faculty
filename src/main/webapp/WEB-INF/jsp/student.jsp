@@ -19,28 +19,27 @@
 </head>
 <body>
 <div class="container">
-    <div class="page-header"><h2>Hello, ${student.getFirstName()} ${student.getLastName()}!</h2></div>
+
+    <div class="page-header"><label><h3>Hello, ${student.getFirstName()} ${student.getLastName()}!</h3></label> <label
+            class="col-md-offset-8"><h3><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h3></label>
+    </div>
+
+    <h3 class="bg-success">Courses:</h3>
 
 
 <c:forEach items="${student.getCourses()}" var="course">
-<form role="form" method="GET" action="showcourse">
-    <input name="course_id" type=hidden value=${course.getId()} />
-    <button class="btn btn-default" type="submit">${course.getName()}</button>
-</form>
 
-
+    <div class="form-group">
+        <label class="control-label"><a
+                href="${pageContext.request.contextPath}/do/showcourse?course_id=${course.getId()}" >${course.getName()}</a></label>
+    </div>
 </c:forEach>
 
 <br/><br/>
 
 <form role="form" action="register" method="GET">
-<button class="btn btn-primary" type="submit">Register For Courses</button>
+<button class="btn btn-primary btn-sm" type="submit">Register For Courses</button>
 </form>
-
-    <br/><br/>
-
-    <h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2>
-
 
 </div>
 </body>

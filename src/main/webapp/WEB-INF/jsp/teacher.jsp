@@ -20,11 +20,11 @@
 <body>
 <div class="container">
 
-    <div class="page-header"><label><h2>Hello, Prof.${teacher.getLastName()}!</h2></label> <label
-            class="col-md-offset-8"><h2><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h2></label>
+    <div class="page-header"><label><h3>Hello, Prof.${teacher.getLastName()}!</h3></label> <label
+            class="col-md-offset-8"><h3><a href="${pageContext.request.contextPath}/do/logout">LOGOUT</a></h3></label>
     </div>
 
-    <h2 class="bg-danger">Archived courses:</h2>
+    <h3 class="bg-danger">Archived courses:</h3>
 
     <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
@@ -38,7 +38,7 @@
     </c:forEach>
 
     <br/><br/>
-    <h2 class="bg-success">Open courses:</h2>
+    <h3 class="bg-success">Open courses:</h3>
     <c:forEach items="${sessionScope.teacher.courses}" var="course">
 
 
