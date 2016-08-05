@@ -17,6 +17,7 @@
         <jsp-api.version>2.3.1</jsp-api.version>
         <logback.version>1.1.6</logback.version>
         <jstl.version>1.2</jstl.version>
+        <apachi-codec.version>1.9</apachi-codec.version>
 
         <ojdbc.driver.version>12.1.0.1</ojdbc.driver.version>
     </properties>
@@ -86,6 +87,12 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${apachi-codec.version}</version>
         </dependency>
 
     </dependencies>

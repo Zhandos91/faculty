@@ -10,9 +10,9 @@
       <schema id="1" name="JANSU">
         <object-id>48</object-id>
         <created-timestamp>2016-07-28.15:51:31</created-timestamp>
-        <modified-timestamp>2016-08-01.17:26:23</modified-timestamp>
+        <modified-timestamp>2016-08-05.10:40:39</modified-timestamp>
         <visible>1</visible>
-        <introspection-timestamp>2016-08-01.17:26:26</introspection-timestamp>
+        <introspection-timestamp>2016-08-05.10:40:41</introspection-timestamp>
       </schema>
       <schema id="2" name="PUBLIC">
         <object-id>1</object-id>
@@ -116,7 +116,7 @@
       <table id="26" parent="1" name="USERS">
         <object-id>20465</object-id>
         <created-timestamp>2016-07-28.15:56:45</created-timestamp>
-        <modified-timestamp>2016-08-01.17:26:23</modified-timestamp>
+        <modified-timestamp>2016-08-05.10:40:39</modified-timestamp>
         <organization>HEAP</organization>
       </table>
       <column id="27" parent="23" name="ARCHIVE_ID">
@@ -163,7 +163,6 @@
         <modified-timestamp>2016-07-28.16:16:37</modified-timestamp>
         <columns>STUDENT_ID</columns>
         <initially-deferred>1</initially-deferred>
-        <ref-key>~.USERS.USERS_PK</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
@@ -179,7 +178,6 @@
         <modified-timestamp>2016-07-29.10:40:40</modified-timestamp>
         <columns>TEACHER_ID</columns>
         <initially-deferred>1</initially-deferred>
-        <ref-key>~.USERS.USERS_PK</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
@@ -226,7 +224,6 @@
         <modified-timestamp>2016-07-28.16:04:37</modified-timestamp>
         <columns>USER_ID</columns>
         <initially-deferred>1</initially-deferred>
-        <ref-key>~.USERS.USERS_PK</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
@@ -288,25 +285,26 @@
         <mandatory>1</mandatory>
         <data-type>NUMBER(10)|0</data-type>
       </column>
-      <column id="56" parent="26" name="EMAIL">
+      <column id="56" parent="26" name="FIRST_NAME">
         <mandatory>1</mandatory>
         <data-type>VARCHAR2(60)|0</data-type>
       </column>
-      <column id="57" parent="26" name="USER_ROLE">
+      <column id="57" parent="26" name="LAST_NAME">
         <mandatory>1</mandatory>
         <data-type>VARCHAR2(60)|0</data-type>
       </column>
-      <column id="58" parent="26" name="PASSWORD">
+      <column id="58" parent="26" name="EMAIL">
         <mandatory>1</mandatory>
         <data-type>VARCHAR2(60)|0</data-type>
       </column>
-      <column id="59" parent="26" name="FIRST_NAME">
+      <column id="59" parent="26" name="USER_ROLE">
         <mandatory>1</mandatory>
         <data-type>VARCHAR2(60)|0</data-type>
       </column>
-      <column id="60" parent="26" name="LAST_NAME">
+      <column id="60" parent="26" name="PASSWORD">
         <mandatory>1</mandatory>
-        <data-type>VARCHAR2(60)|0</data-type>
+        <data-type>VARCHAR2(120)|0</data-type>
+        <default-expression>NULL</default-expression>
       </column>
       <index id="61" parent="26" name="USERS_PK">
         <object-id>20466</object-id>

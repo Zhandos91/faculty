@@ -3,6 +3,7 @@ package com.epam.suleimenov.action;
 import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.UserService;
+import com.epam.suleimenov.util.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ public class SignupAction implements Action {
         String last_name = req.getParameter("last_name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        password = Utils.md5Apache(password);
         String confirm_password = req.getParameter("confirm_password");
         String user_role = req.getParameter("user_role");
 
@@ -35,9 +37,9 @@ public class SignupAction implements Action {
         } else {
 
             try {
-                String encoding = "UTF-8";
-                if (first_name.getBytes(encoding).length > 60 || last_name.getBytes(encoding).length > 60 ||
-                        email.getBytes(encoding).length > 60 || password.getBytes(encoding).length > 60) {
+
+                if (first_name.getBytes(Utils.encoding).length > 60 || last_name.getBytes(Utils.encoding).length > 60 ||
+                        email.getBytes(Utils.encoding).length > 60 || password.getBytes(Utils.encoding).length > 120) {
                     req.setAttribute("signupError", "Maximum length exceeded");
                     return signupAgain;
                 }

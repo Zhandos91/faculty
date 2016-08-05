@@ -9,6 +9,7 @@ import com.epam.suleimenov.model.*;
 import com.epam.suleimenov.service.ArchiveService;
 import com.epam.suleimenov.service.Service;
 import com.epam.suleimenov.service.UserService;
+import com.epam.suleimenov.util.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ public class LoginAction implements Action {
         String password = req.getParameter("password");
         String userRole = req.getParameter("user_role");
 
-        if (userService.checkUser(login, password, userRole)) {
+        if (userService.checkUser(login, Utils.md5Apache(password), userRole)) {
             User user = userService.findUser(login);
             req.getSession().setAttribute("user", user);
             if(userRole.equals("TEACHER")) {
