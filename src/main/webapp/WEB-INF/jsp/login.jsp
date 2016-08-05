@@ -15,31 +15,38 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- BootStrapValidation CSS file -->
+    <link rel="stylesheet" href="/bootstrap-validator/css/bootstrapValidator.min.css">
+
+    <!-- Bootstrap JS -->
+    <script src="/bootstrap-validator/js/bootstrapValidator.min.js" type="text/javascript"></script>
 </head>
 <body>
 
 <div class="container">
-    <form class="form-inline" role="form" action="login" focus="login" method="post">
+    <form id="loginForm" class="form-inline" role="form" action="login" focus="login" method="post">
 
         <div class="page-header"><h2>Login Information</h2></div>
 
         <div class="form-group">
-            <label class="control-label">User Role:</label>
-            <select class="control-panel" name="user_role">
-                <option>ADMIN</option>
-                <option>STUDENT</option>
-                <option>TEACHER</option>
+            <label class="control-label" for="user_role">User Role:</label>
+            <select class="control-panel" id="user_role" name="user_role">
+                <option value="">CHOOSE ONE</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="STUDENT">STUDENT</option>
+                <option value="TEACHER">TEACHER</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label class="control-label">Login:</label>
-            <input type="text" class="form-control" name="login" placeholder="Enter login">
+            <label class="control-label" for="login">Login:</label>
+            <input type="text" class="form-control" id="login" name="login" placeholder="Enter login">
         </div>
 
         <div class="form-group">
-            <label class="control-label">Password:</label>
-            <input class="form-control" type="password" name="password" placeholder="Enter password">
+            <label class="control-label" for="password">Password:</label>
+            <input class="form-control" type="password" id="password" name="password" placeholder="Enter password">
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -49,4 +56,45 @@
 </div>
 
 </body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var validator = $("#loginForm").bootstrapValidator({
+
+            feedbackIcons: {
+                valid: "glyphicon glyphicon-ok",
+                invalid: "glyphicon glyphicon-remove",
+                validating: "glyphicon glyphicon-refresh"
+            },
+            fields: {
+                user_role: {
+                    validators: {
+                        notEmpty: {
+                            message: "User role must be chosen"
+                        }
+                    }
+                },
+                login: {
+                    validators: {
+                        notEmpty: {
+                            message: "Login must be entered"
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: "Password must be entered"
+                        }
+                    }
+                }
+
+            }
+        });
+
+
+    });
+
+
+</script>
 </html>

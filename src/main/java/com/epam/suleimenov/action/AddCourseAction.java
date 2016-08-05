@@ -26,6 +26,10 @@ public class AddCourseAction implements Action {
             req.setAttribute("courseAddError", "Course name must be entered!!!");
             return addCourseAgain;
         }
+        else if(description.equals("")) {
+            req.setAttribute("courseAddError", "Course description name must be entered!!!");
+            return addCourseAgain;
+        }
 
         Course course = new Course();
         course.setName(name);

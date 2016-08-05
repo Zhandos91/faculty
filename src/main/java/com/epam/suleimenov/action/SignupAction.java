@@ -1,10 +1,12 @@
 package com.epam.suleimenov.action;
 
-import com.epam.suleimenov.model.*;
-import com.epam.suleimenov.service.Service;
+import com.epam.suleimenov.model.Course;
+import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.UserService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 
@@ -22,21 +24,27 @@ public class SignupAction implements Action {
         String last_name = req.getParameter("last_name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        String retyped_password = req.getParameter("retyped_password");
+        String confirm_password = req.getParameter("confirm_password");
         String user_role = req.getParameter("user_role");
 
-        System.out.println(first_name + " " + last_name + " " + email + " " + password + " " + retyped_password + " " + user_role );
+        System.out.println(first_name + " " + last_name + " " + email + " " + password + " " + confirm_password + " " + user_role);
 
         if (userService.findUser(email) != null) {
             req.setAttribute("signupError", "The email is already used, try different one!");
             return signupAgain;
-        } else if (!password.equals(retyped_password)) {
-            req.setAttribute("signupError", "Retyped password is not matched!");
-            return signupAgain;
-        } else if (first_name.equals("") || last_name.equals("") || email.equals("") || password.equals("")) {
-            req.setAttribute("signupError", "All fields MUST be filled!");
-            return signupAgain;
         } else {
+
+            try {
+                String encoding = "UTF-8";
+                if (first_name.getBytes(encoding).length > 60 || last_name.getBytes(encoding).length > 60 ||
+                        email.getBytes(encoding).length > 60 || password.getBytes(encoding).length > 60) {
+                    req.setAttribute("signupError", "Maximum length exceeded");
+                    return signupAgain;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
             User user = new User();
             user.setFirstName(first_name);
             user.setLastName(last_name);
@@ -46,11 +54,11 @@ public class SignupAction implements Action {
             user.setCourses(new ArrayList<Course>());
             userService.createUser(user);
 
-            if(user_role.equals("TEACHER")) {
+            if (user_role.equals("TEACHER")) {
                 req.getSession().setAttribute("teacher", user);
                 return teacherAction;
 
-            }else if(user_role.equals("STUDENT")) {
+            } else if (user_role.equals("STUDENT")) {
                 req.getSession().setAttribute("student", user);
                 return studentAction;
             }
