@@ -1,5 +1,6 @@
 package com.epam.suleimenov.action;
 
+import com.epam.suleimenov.connection.MyDBConnectionPool;
 import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.UserService;
@@ -29,7 +30,9 @@ public class SignupAction implements Action {
         String confirm_password = req.getParameter("confirm_password");
         String user_role = req.getParameter("user_role");
 
-        System.out.println(first_name + " " + last_name + " " + email + " " + password + " " + confirm_password + " " + user_role);
+        // System.out.println(first_name + " " + last_name + " " + email + " " + password + " " + confirm_password + " " + user_role);
+
+        System.out.println("Pool size: " + MyDBConnectionPool.getInstanceholder().getPoolSize());
 
         if (userService.findUser(email) != null) {
             req.setAttribute("signupError", "The email is already used, try different one!");

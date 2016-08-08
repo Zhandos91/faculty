@@ -36,7 +36,6 @@ public class AddCourseAction implements Action {
         course.setDescription(description);
         course.setStatus("open");
         List<User> teachers = new ArrayList<User>();
-        System.out.println("Teacher: " + teacher);
 
         teachers.add(teacher);
         courseService.createCourse(course);

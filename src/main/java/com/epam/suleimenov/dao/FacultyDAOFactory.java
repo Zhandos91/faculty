@@ -1,17 +1,25 @@
 package com.epam.suleimenov.dao;
 
-import com.epam.suleimenov.connection.DBConnection;
-import com.epam.suleimenov.connection.DBConnectionPool;
+import com.epam.suleimenov.connection.MyDBConnectionPool;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class FacultyDAOFactory extends DAOFactory {
 
-    private final Connection connection;
+    private Logger log = LoggerFactory.getLogger(FacultyDAOFactory.class.getName());
+    private Connection connection = null;
 
     public FacultyDAOFactory() {
-        connection  = DBConnectionPool.getConnection();
+        try {
+            connection  = MyDBConnectionPool.getInstanceholder().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -32,7 +40,10 @@ public class FacultyDAOFactory extends DAOFactory {
     public void close() {
         if (connection != null) {
             try {
+                log.debug("Closing connection");
                 connection.close();
+                log.debug("Closing pool connection");
+                MyDBConnectionPool.getInstanceholder().drain();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

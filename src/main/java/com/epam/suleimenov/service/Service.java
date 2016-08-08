@@ -4,6 +4,7 @@ import com.epam.suleimenov.connection.DBConnection;
 import com.epam.suleimenov.connection.DBConnectionPool;
 import com.epam.suleimenov.dao.*;
 import com.epam.suleimenov.servlet.Controller;
+import com.epam.suleimenov.util.Utils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -21,16 +22,7 @@ public class Service implements  AutoCloseable {
     private final String DAO_PROPERTY = "dao.properties";
 
     public Service() {
-
-        Properties properties = new Properties();
-        try {
-            properties.load(Service.class.getClassLoader().getResourceAsStream(DAO_PROPERTY));
-            daoFactory = DAOFactory.getDAOFactory(properties.getProperty(FACULTY_DAO_FACTORY));
-
-        } catch (IOException e) {
-            System.out.println("Service: property file is not set or found");
-            e.printStackTrace();
-        }
+            daoFactory = DAOFactory.getDAOFactory(Utils.getFile(DAO_PROPERTY).getProperty(FACULTY_DAO_FACTORY));
     }
 
     public static DAOFactory getDAOFactory() {

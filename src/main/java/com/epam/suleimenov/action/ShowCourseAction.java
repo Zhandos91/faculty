@@ -20,10 +20,7 @@ public class ShowCourseAction implements Action {
         Course course = courseService.findCourse(course_id);
         List<User> students = courseService.findStudentsByCourse(course);
         List<User> teachers = courseService.findTeachersByCourse(course);
-for(User user:teachers)
-    System.out.println("Teacher:" + user);
-        for(User user:students)
-            System.out.println("Teacher:" + user);
+
         req.getSession().setAttribute("students", students);
         req.getSession().setAttribute("course", course);
         req.getSession().setAttribute("teachers", teachers);

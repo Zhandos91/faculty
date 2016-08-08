@@ -1,16 +1,11 @@
 package com.epam.suleimenov.service;
 
 import com.epam.suleimenov.dao.DAOFactory;
-import com.epam.suleimenov.dao.GenericDAO;
 import com.epam.suleimenov.dao.UserDAO;
-import com.epam.suleimenov.model.Archive;
 import com.epam.suleimenov.model.User;
 
 import java.util.List;
 
-/**
- * Created by Zhandos_Suleimenov on 8/1/2016.
- */
 public class UserService {
 
     private DAOFactory daoFactory;

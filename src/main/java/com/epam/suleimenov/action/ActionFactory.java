@@ -1,5 +1,7 @@
 package com.epam.suleimenov.action;
 
+import com.epam.suleimenov.util.Utils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,18 +11,12 @@ public class ActionFactory {
 
     private Map<String, Action> actions;
     private Properties properties;
+    private final String ACTION_PROPERTY = "actions.properties";
 
     public ActionFactory() {
         actions = new HashMap<>();
+        properties = Utils.getFile(ACTION_PROPERTY);
 
-        properties = new Properties();
-
-        try {
-            properties.load(ActionFactory.class.getClassLoader().getResourceAsStream("actions.properties"));
-        } catch (IOException e) {
-            System.out.println("Property file is not set or found");
-            e.printStackTrace();
-        }
         for (String key : properties.stringPropertyNames()) {
             String value = properties.getProperty(key);
             actions.put(key, getActionClassByName(value));

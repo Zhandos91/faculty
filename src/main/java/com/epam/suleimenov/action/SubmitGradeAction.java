@@ -53,7 +53,6 @@ public class SubmitGradeAction implements Action {
             }
             course.setStatus("archived");
             courseService.updateCourse(course);
-//            teacher = Service.getTeacherDAO().getTeacherById(teacher.getId());
             teacher.setCourses(courseService.findCoursesByUser(teacher));
             req.getSession().setAttribute("teacher", teacher);
         }

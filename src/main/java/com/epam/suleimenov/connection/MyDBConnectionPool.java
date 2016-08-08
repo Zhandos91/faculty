@@ -1,5 +1,7 @@
 package com.epam.suleimenov.connection;
 
+import com.epam.suleimenov.util.Utils;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import org.slf4j.Logger;
 
-public class MyDBConnectionPool {
+public class MyDBConnectionPool implements ConnectionPool {
+
+    private static Logger  log = LoggerFactory.getLogger(MyDBConnectionPool.class.getName());
 
     public static String dbName;
     private static String dbPath;
@@ -17,26 +22,19 @@ public class MyDBConnectionPool {
     private static String dbDriver;
     private boolean drained = false;
     private int maxConn = 10;
+    private static final String DB_PROPERTY = "db.properties";
+
     static {
-        Properties properties = new Properties();
-
-        try {
-            properties.load(MyDBConnectionPool.class.getClassLoader().getResourceAsStream("db.properties"));
-            dbDriver = properties.getProperty("db_driver");
-            dbPath = properties.getProperty("db_path");
-            dbUser = properties.getProperty("db_user");
-            dbPassword = properties.getProperty("db_password");
-            dbName = properties.getProperty("db_name");
-
-        } catch (IOException e) {
-            System.out.println("Property file is not set or found");
-            e.printStackTrace();
-        }
+            dbDriver =  Utils.getFile(DB_PROPERTY).getProperty("db_driver");
+            dbPath =  Utils.getFile(DB_PROPERTY).getProperty("db_path");
+            dbUser =  Utils.getFile(DB_PROPERTY).getProperty("db_user");
+            dbPassword =  Utils.getFile(DB_PROPERTY).getProperty("db_password");
+            dbName =  Utils.getFile(DB_PROPERTY).getProperty("db_name");
 
         try {
             Class.forName(dbDriver);
         } catch (ClassNotFoundException e) {
-            System.out.println("Oracle JDBC Driver is not found");
+            log.error("Oracle JDBC Driver is not found");
             e.printStackTrace();
         }
     }
@@ -55,6 +53,10 @@ public class MyDBConnectionPool {
 
     public void setMaxConn(int maxConn) {
         this.maxConn = maxConn;
+    }
+
+    public static ConnectionPool getInstanceholder() {
+        return InstanceHolder.myDBConnectionPool;
     }
 
     public Connection getConnection() throws SQLException {
@@ -102,7 +104,6 @@ public class MyDBConnectionPool {
 
         }
 
-
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(dbPath, dbUser, dbPassword);
@@ -119,15 +120,20 @@ public class MyDBConnectionPool {
 
         return pooledConnection;
     }
-///
-    public synchronized void freeConnection(Connection connection) {
+
+    public synchronized void freeConnection(PooledConnection connection) {
         try {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(connection != null && pooledConnections.size() <= maxConn) {
-
+        if(connection != null && pooledConnections.size() > maxConn) {
+            pooledConnections.remove(connection);
+            try {
+                connection.expire();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -146,7 +152,7 @@ public class MyDBConnectionPool {
                 PooledConnection pooledConnection = pooledConnections.get(i);
 
                 if(pooledConnection.inUse()) {
-                    logger.info("Forced closing of a pooled connection");
+                    log.info("Forced closing of a pooled connection");
                     pooledConnection.printStackTrace();
                 }
 
@@ -160,6 +166,10 @@ public class MyDBConnectionPool {
             }
         }
 
+    }
+
+    private static class InstanceHolder {
+        static final MyDBConnectionPool myDBConnectionPool = new MyDBConnectionPool();
     }
 
     static class PooledConnection implements Connection {
