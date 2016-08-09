@@ -3,13 +3,11 @@ package com.epam.suleimenov.action;
 import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.CourseService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * Created by Zhandos_Suleimenov on 7/21/2016.
- */
 public class ShowCoursessAction implements Action {
 
     private ActionResult registerAction = new ActionResult("registration");
@@ -17,16 +15,16 @@ public class ShowCoursessAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
-        CourseService courseService = new CourseService();
+        try (CourseService courseService = new CourseService()) {
+            User student = (User) req.getSession().getAttribute("student");
+            List<Course> student_courses = student.getCourses();
+            List<Course> registration_courses = courseService.getAllCoursesByStatus("open");
 
-        User student = (User) req.getSession().getAttribute("student");
-        List<Course> student_courses = student.getCourses();
-        List<Course> registration_courses = courseService.getAllCoursesByStatus("open");
+            for (Course course : student_courses)
+                registration_courses.remove(course);
 
-        for (Course course : student_courses)
-            registration_courses.remove(course);
-
-        req.getSession().setAttribute("courses", registration_courses);
+            req.getSession().setAttribute("courses", registration_courses);
+        }
 
         return registerAction;
     }

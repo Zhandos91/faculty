@@ -1,18 +1,15 @@
 package com.epam.suleimenov.service;
 
-import com.epam.suleimenov.dao.DAOFactory;
 import com.epam.suleimenov.dao.UserDAO;
 import com.epam.suleimenov.model.User;
 
 import java.util.List;
 
-public class UserService {
+public class UserService extends Service {
 
-    private DAOFactory daoFactory;
     private UserDAO userDAO;
 
     public UserService() {
-        daoFactory = Service.getDAOFactory();
         userDAO = (UserDAO) daoFactory.createDAO(User.class);
     }
 

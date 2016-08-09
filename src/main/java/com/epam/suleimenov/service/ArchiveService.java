@@ -1,18 +1,15 @@
 package com.epam.suleimenov.service;
 
 import com.epam.suleimenov.dao.ArchiveDAO;
-import com.epam.suleimenov.dao.DAOFactory;
 import com.epam.suleimenov.model.Archive;
 
 import java.util.List;
 
-public class ArchiveService {
+public class ArchiveService extends Service {
 
-    private DAOFactory daoFactory;
     private ArchiveDAO archiveDAO;
 
     public ArchiveService() {
-        daoFactory = Service.getDAOFactory();
         archiveDAO = (ArchiveDAO) daoFactory.createDAO(Archive.class);
     }
 

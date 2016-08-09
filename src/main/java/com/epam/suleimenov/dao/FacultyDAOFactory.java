@@ -40,10 +40,8 @@ public class FacultyDAOFactory extends DAOFactory {
     public void close() {
         if (connection != null) {
             try {
-                log.debug("Closing connection");
                 connection.close();
-                log.debug("Closing pool connection");
-                MyDBConnectionPool.getInstanceholder().drain();
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }

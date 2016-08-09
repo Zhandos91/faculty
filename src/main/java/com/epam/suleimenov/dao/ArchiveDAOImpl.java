@@ -1,14 +1,18 @@
 package com.epam.suleimenov.dao;
 
-import com.epam.suleimenov.connection.DBConnection;
+import com.epam.suleimenov.connection.MyDBConnectionPool;
 import com.epam.suleimenov.model.Archive;
-import java.sql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ArchiveDAOImpl implements ArchiveDAO {
 
@@ -21,7 +25,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
 
     @Override
     public boolean clear() {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".ARCHIVE";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".ARCHIVE";
         boolean isCleared = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             if (preparedStatement.executeUpdate() > 0)
@@ -35,7 +39,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
     @Override
     public Archive create(Archive archive) {
 
-        String sql = "INSERT INTO " + DBConnection.getDBName() + ".ARCHIVE(STUDENT_ID, COURSE_ID, GRADE, GRADING_DATE, TEACHER_ID) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + MyDBConnectionPool.dbName + ".ARCHIVE(STUDENT_ID, COURSE_ID, GRADE, GRADING_DATE, TEACHER_ID) VALUES(?, ?, ?, ?, ?)";
         SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         log.debug("TO_DATE(\'" + date_formatter.format(new Date()) + "\',\'yyyy-mm-dd hh:mi:ss\')");
@@ -58,11 +62,12 @@ public class ArchiveDAOImpl implements ArchiveDAO {
     }
 
     @Override
-    public boolean delete(Object id) {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".ARCHIVE WHERE ARCHIVE_ID = ?";
+    public boolean delete(Object object_id) {
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".ARCHIVE WHERE ARCHIVE_ID = ?";
         boolean isDeleted = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, (int) id);
+            int id = (int) object_id;
+            preparedStatement.setInt(1, id);
             if (preparedStatement.executeUpdate() > 0)
                 isDeleted = true;
         } catch (SQLException e) {
@@ -73,7 +78,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
 
     @Override
     public Archive find(Object id) {
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".ARCHIVE WHERE ARCHIVE_ID = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".ARCHIVE WHERE ARCHIVE_ID = ?";
         Archive archive = null;
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -99,7 +104,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
     @Override
     public List<Archive> getAll() {
         List<Archive> archives = new ArrayList<Archive>();
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".ARCHIVE";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".ARCHIVE";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
@@ -123,7 +128,7 @@ public class ArchiveDAOImpl implements ArchiveDAO {
 
     @Override
     public Archive update(Archive archive) {
-        String sql = "UPDATE " + DBConnection.getDBName() + ".ARCHIVE SET STUDENT_ID = ?, COURSE_ID = ?, GRADE = ?, GRADING_DATE = ?, TEACHER_ID = ? WHERE ARCHIVE_ID = ?";
+        String sql = "UPDATE " + MyDBConnectionPool.dbName + ".ARCHIVE SET STUDENT_ID = ?, COURSE_ID = ?, GRADE = ?, GRADING_DATE = ?, TEACHER_ID = ? WHERE ARCHIVE_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, archive.getStudent().getId());

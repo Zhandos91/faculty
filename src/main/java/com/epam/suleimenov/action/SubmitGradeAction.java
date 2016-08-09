@@ -5,7 +5,6 @@ import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 import com.epam.suleimenov.service.ArchiveService;
 import com.epam.suleimenov.service.CourseService;
-import com.epam.suleimenov.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +19,6 @@ public class SubmitGradeAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-
-        ArchiveService archiveService = new ArchiveService();
-        CourseService courseService = new CourseService();
 
         Course course = (Course) req.getSession().getAttribute("course");
         User teacher = (User) req.getSession().getAttribute("teacher");
@@ -41,20 +37,26 @@ public class SubmitGradeAction implements Action {
                 }
 
             }
-            for (User student : students) {
-                String grade = req.getParameter(Integer.toString(student.getId()));
-                Archive archive = new Archive();
-                archive.setCourse(course);
-                archive.setDate(new Date());
-                archive.setGrade(Archive.Grade.valueOf(grade));
-                archive.setStudent(student);
-                archive.setTeacher(teacher);
-                archiveService.createArchive(archive);
+
+            try(ArchiveService archiveService = new ArchiveService();) {
+                for (User student : students) {
+                    String grade = req.getParameter(Integer.toString(student.getId()));
+                    Archive archive = new Archive();
+                    archive.setCourse(course);
+                    archive.setDate(new Date());
+                    archive.setGrade(Archive.Grade.valueOf(grade));
+                    archive.setStudent(student);
+                    archive.setTeacher(teacher);
+                    archiveService.createArchive(archive);
+                }
             }
-            course.setStatus("archived");
-            courseService.updateCourse(course);
-            teacher.setCourses(courseService.findCoursesByUser(teacher));
-            req.getSession().setAttribute("teacher", teacher);
+
+            try(CourseService courseService = new CourseService()) {
+                course.setStatus("archived");
+                courseService.updateCourse(course);
+                teacher.setCourses(courseService.findCoursesByUser(teacher));
+                req.getSession().setAttribute("teacher", teacher);
+            }
         }
         return teacherAction;
 

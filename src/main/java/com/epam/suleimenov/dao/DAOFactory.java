@@ -1,6 +1,6 @@
 package com.epam.suleimenov.dao;
 
-public abstract class DAOFactory {
+public abstract class DAOFactory{
 
     public static DAOFactory getDAOFactory(String whichFactory) {
 

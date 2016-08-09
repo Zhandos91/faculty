@@ -25,7 +25,4 @@
     <res-auth>Container</res-auth>
     </resource-ref>
 
-    <listener>
-        <listener-class>com.epam.suleimenov.servlet.SessionListener</listener-class>
-    </listener>
 </web-app>

@@ -1,13 +1,16 @@
 package com.epam.suleimenov.dao;
 
-import com.epam.suleimenov.connection.DBConnection;
+import com.epam.suleimenov.connection.MyDBConnectionPool;
 import com.epam.suleimenov.model.User;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserDAOImpl implements UserDAO {
@@ -21,7 +24,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean clear() {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".USERS";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".USERS";
         boolean isCleared = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             if (preparedStatement.executeUpdate() > 0)
@@ -34,7 +37,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User create(User user) {
-        String sql = "INSERT INTO " + DBConnection.getDBName() + ".USERS(FIRST_NAME, LAST_NAME, EMAIL, USER_ROLE, PASSWORD) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + MyDBConnectionPool.dbName + ".USERS(FIRST_NAME, LAST_NAME, EMAIL, USER_ROLE, PASSWORD) VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"USER_ID"})) {
 
@@ -57,7 +60,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean delete(Object id) {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".COURSES WHERE USER_ID = ?";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".COURSES WHERE USER_ID = ?";
         boolean isDeleted = false;
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, (int) id);
@@ -72,7 +75,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User find(Object id) {
-        String sql = "SELECT * FROM " +  DBConnection.getDBName() + ".USERS WHERE USER_ID = ?";
+        String sql = "SELECT * FROM " +  MyDBConnectionPool.dbName + ".USERS WHERE USER_ID = ?";
         User user = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -99,7 +102,7 @@ public class UserDAOImpl implements UserDAO {
     public List<User> getAll() {
         List<User> users = new ArrayList<User>();
 
-        String sql = "SELECT * from " + DBConnection.getDBName() + ".USERS";
+        String sql = "SELECT * from " + MyDBConnectionPool.dbName + ".USERS";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultset = statement.executeQuery();
 
@@ -124,7 +127,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User update(User user) {
-        String sql = "UPDATE " + DBConnection.getDBName() + ".USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, USER_ROLE = ?, PASSWORD = ? WHERE USER_ID = ?";
+        String sql = "UPDATE " + MyDBConnectionPool.dbName + ".USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, USER_ROLE = ?, PASSWORD = ? WHERE USER_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getFirstName());
@@ -158,7 +161,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findUserByEmail(String email) {
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".USERS WHERE EMAIL = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".USERS WHERE EMAIL = ?";
         User user = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

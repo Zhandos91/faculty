@@ -4,32 +4,25 @@ package com.epam.suleimenov.servlet;
 import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
-import com.epam.suleimenov.dao.DAOFactory;
-import com.epam.suleimenov.dao.UserDAO;
-import com.epam.suleimenov.service.ArchiveService;
-import com.epam.suleimenov.service.CourseService;
-import com.epam.suleimenov.service.Service;
-import com.epam.suleimenov.service.UserService;
+import com.epam.suleimenov.connection.MyDBConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.Date;
 
 public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
-    private Service service;
     private Logger log = LoggerFactory.getLogger(Controller.class);
 
     @Override
     public void init() throws ServletException {
-        service = new Service();
-        actionFactory = new ActionFactory();
 
+        actionFactory = new ActionFactory();
 //        new ArchiveService().clearArchive();
 //        new CourseService().clearCourseToUser();
 //        new CourseService().clearCourses();
@@ -59,6 +52,12 @@ public class Controller extends HttpServlet {
             String path = String.format("/WEB-INF/jsp/" + result.getView() + ".jsp");
             req.getRequestDispatcher(path).forward(req, resp);
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        MyDBConnectionPool.getInstanceholder().drain();
     }
 }
 

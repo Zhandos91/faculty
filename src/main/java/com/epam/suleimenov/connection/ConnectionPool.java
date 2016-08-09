@@ -6,9 +6,11 @@ import java.sql.SQLException;
 public interface ConnectionPool {
     void setCheckConnections(boolean checkConnections);
     void setMaxConn(int maxConn);
-    void freeConnection(MyDBConnectionPool.PooledConnection connection);
+    void freeConnection(Connection connection);
     int getPoolSize();
     void drain();
     Connection getConnection() throws SQLException;
+    public int getFreeConnections();
+    public int getBusyConnections();
 
 }

@@ -1,35 +1,32 @@
 package com.epam.suleimenov.connection;
 
 import com.epam.suleimenov.util.Utils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.IOException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
-import org.slf4j.Logger;
 
 public class MyDBConnectionPool implements ConnectionPool {
 
-    private static Logger  log = LoggerFactory.getLogger(MyDBConnectionPool.class.getName());
-
+    private static final String DB_PROPERTY = "db.properties";
     public static String dbName;
+    private static Logger log = LoggerFactory.getLogger(MyDBConnectionPool.class.getName());
     private static String dbPath;
     private static String dbUser;
     private static String dbPassword;
     private static String dbDriver;
-    private boolean drained = false;
-    private int maxConn = 10;
-    private static final String DB_PROPERTY = "db.properties";
 
     static {
-            dbDriver =  Utils.getFile(DB_PROPERTY).getProperty("db_driver");
-            dbPath =  Utils.getFile(DB_PROPERTY).getProperty("db_path");
-            dbUser =  Utils.getFile(DB_PROPERTY).getProperty("db_user");
-            dbPassword =  Utils.getFile(DB_PROPERTY).getProperty("db_password");
-            dbName =  Utils.getFile(DB_PROPERTY).getProperty("db_name");
+        dbDriver = Utils.getFile(DB_PROPERTY).getProperty("db_driver");
+        dbPath = Utils.getFile(DB_PROPERTY).getProperty("db_path");
+        dbUser = Utils.getFile(DB_PROPERTY).getProperty("db_user");
+        dbPassword = Utils.getFile(DB_PROPERTY).getProperty("db_password");
+        dbName = Utils.getFile(DB_PROPERTY).getProperty("db_name");
 
         try {
             Class.forName(dbDriver);
@@ -39,12 +36,18 @@ public class MyDBConnectionPool implements ConnectionPool {
         }
     }
 
-    protected boolean checkConnections = true;
+    private boolean checkConnections = true;
+    private boolean drained = false;
+    private int maxConn = 10;
     private List<PooledConnection> pooledConnections;
 
 
     public MyDBConnectionPool() {
         pooledConnections = new ArrayList<PooledConnection>();
+    }
+
+    public static ConnectionPool getInstanceholder() {
+        return InstanceHolder.myDBConnectionPool;
     }
 
     public void setCheckConnections(boolean checkConnections) {
@@ -55,13 +58,9 @@ public class MyDBConnectionPool implements ConnectionPool {
         this.maxConn = maxConn;
     }
 
-    public static ConnectionPool getInstanceholder() {
-        return InstanceHolder.myDBConnectionPool;
-    }
-
     public Connection getConnection() throws SQLException {
 
-        if(drained)
+        if (drained)
             throw new SQLException("ConnectionPool is drained");
 
         PooledConnection pooledConnection = null;
@@ -117,22 +116,21 @@ public class MyDBConnectionPool implements ConnectionPool {
             pooledConnections.add(pooledConnection);
         }
 
-
         return pooledConnection;
     }
 
-    public synchronized void freeConnection(PooledConnection connection) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if(connection != null && pooledConnections.size() > maxConn) {
-            pooledConnections.remove(connection);
-            try {
-                connection.expire();
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public synchronized void freeConnection(Connection connection) {
+
+        synchronized (pooledConnections) {
+
+            if (connection != null && pooledConnections.size() > maxConn) {
+                pooledConnections.remove(connection);
+                try {
+                    PooledConnection pooledConnection = (PooledConnection) connection;
+                    pooledConnection.expire();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -144,14 +142,34 @@ public class MyDBConnectionPool implements ConnectionPool {
         }
     }
 
+    public int getFreeConnections() {
+        int count = 0;
+        for (PooledConnection pooledConnection : pooledConnections) {
+            if (!pooledConnection.inUse())
+                count++;
+        }
+
+        return count;
+    }
+
+    public int getBusyConnections() {
+        int count = 0;
+        for (PooledConnection pooledConnection : pooledConnections) {
+            if (pooledConnection.inUse())
+                count++;
+        }
+
+        return count;
+    }
+
     public void drain() {
         drained = true;
 
         synchronized (pooledConnections) {
-            for(int i = pooledConnections.size() - 1; i >= 0; i--) {
+            for (int i = pooledConnections.size() - 1; i >= 0; i--) {
                 PooledConnection pooledConnection = pooledConnections.get(i);
 
-                if(pooledConnection.inUse()) {
+                if (pooledConnection.inUse()) {
                     log.info("Forced closing of a pooled connection");
                     pooledConnection.printStackTrace();
                 }
@@ -172,7 +190,7 @@ public class MyDBConnectionPool implements ConnectionPool {
         static final MyDBConnectionPool myDBConnectionPool = new MyDBConnectionPool();
     }
 
-    static class PooledConnection implements Connection {
+    class PooledConnection implements Connection {
 
         protected Connection connection;
         protected boolean inUse;
@@ -221,6 +239,7 @@ public class MyDBConnectionPool implements ConnectionPool {
 
         @Override
         public synchronized void close() throws SQLException {
+
             if (inUse) {
                 timeClosed = System.currentTimeMillis();
                 inUse = false;
@@ -228,6 +247,9 @@ public class MyDBConnectionPool implements ConnectionPool {
                 if (autoCommit == false)
                     setAutoCommit(true);
             }
+
+            freeConnection(this);
+
         }
 
         @Override

@@ -1,23 +1,16 @@
 package com.epam.suleimenov.service;
 
 import com.epam.suleimenov.dao.CourseDAO;
-import com.epam.suleimenov.dao.DAOFactory;
-import com.epam.suleimenov.model.Archive;
 import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
 
 import java.util.List;
 
-/**
- * Created by Zhandos_Suleimenov on 8/1/2016.
- */
-public class CourseService {
+public class CourseService extends Service {
 
-    private DAOFactory daoFactory;
     private CourseDAO courseDAO;
 
     public CourseService() {
-        daoFactory = Service.getDAOFactory();
         courseDAO = (CourseDAO) daoFactory.createDAO(Course.class);
     }
 

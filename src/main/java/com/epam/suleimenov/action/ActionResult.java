@@ -1,8 +1,5 @@
 package com.epam.suleimenov.action;
 
-/**
- * Created by Zhandos_Suleimenov on 7/14/2016.
- */
 public class ActionResult {
     private final String view;
     private final boolean redirect;

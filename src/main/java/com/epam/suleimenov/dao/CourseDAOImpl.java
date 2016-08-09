@@ -1,14 +1,17 @@
 package com.epam.suleimenov.dao;
 
-import com.epam.suleimenov.connection.DBConnection;
+import com.epam.suleimenov.connection.MyDBConnectionPool;
 import com.epam.suleimenov.model.Course;
 import com.epam.suleimenov.model.User;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CourseDAOImpl implements CourseDAO {
@@ -22,7 +25,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public boolean clear() {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".COURSES";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".COURSES";
         boolean isCleared = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             if (preparedStatement.executeUpdate() > 0)
@@ -37,7 +40,7 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public Course create(Course course) {
 
-        String sql = "INSERT INTO " + DBConnection.getDBName() + ".COURSES(COURSE_NAME, COURSE_DESCRIPTION, COURSE_STATUS) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO " + MyDBConnectionPool.dbName + ".COURSES(COURSE_NAME, COURSE_DESCRIPTION, COURSE_STATUS) VALUES(?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql,  new String[]{"COURSE_ID"})) {
             preparedStatement.setString(1, course.getName());
@@ -57,7 +60,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public boolean delete(Object id) {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".COURSES WHERE COURSE_ID = ?";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".COURSES WHERE COURSE_ID = ?";
         boolean isCourseDeleted = false;
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, (int) id);
@@ -72,7 +75,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public Course find(Object id) {
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".COURSES WHERE COURSE_ID = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".COURSES WHERE COURSE_ID = ?";
         Course course = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -95,15 +98,15 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public List<Course> getAll() {
         ArrayList<Course> courses = new ArrayList<Course>();
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".COURSES";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".COURSES";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultset = statement.executeQuery();
             while (resultset.next()) {
                 Course course = new Course();
+                course.setStatus(resultset.getString("course_status"));
                 course.setId(resultset.getInt("course_id"));
                 course.setName(resultset.getString("course_name"));
                 course.setDescription(resultset.getString("course_description"));
-                course.setStatus(resultset.getString("course_status"));
                 courses.add(course);
             }
 
@@ -116,7 +119,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     public Course update(Course course) {
 
-        String sql = "UPDATE " + DBConnection.getDBName() + ".COURSES SET COURSE_NAME = ?, COURSE_DESCRIPTION = ?, COURSE_STATUS = ? WHERE COURSE_ID = ?";
+        String sql = "UPDATE " + MyDBConnectionPool.dbName + ".COURSES SET COURSE_NAME = ?, COURSE_DESCRIPTION = ?, COURSE_STATUS = ? WHERE COURSE_ID = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, course.getName());
@@ -133,7 +136,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public boolean addToCourseToUser(Course course, User user, String listener_type) {
-        String sql = "INSERT INTO " + DBConnection.getDBName() + ".COURSE_TO_USER(USER_ID, COURSE_ID, LISTENER_TYPE) VALUES(?, ?, ?) ";
+        String sql = "INSERT INTO " + MyDBConnectionPool.dbName + ".COURSE_TO_USER(USER_ID, COURSE_ID, LISTENER_TYPE) VALUES(?, ?, ?) ";
         boolean success = false;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -151,7 +154,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public boolean clearCourseToUser() {
-        String sql = "DELETE FROM " + DBConnection.getDBName() + ".COURSE_TO_USER";
+        String sql = "DELETE FROM " + MyDBConnectionPool.dbName + ".COURSE_TO_USER";
         boolean success = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             if (preparedStatement.executeUpdate() > 0)
@@ -166,16 +169,16 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public List<Course> getAllCoursesByStatus(String status) {
         ArrayList<Course> courses = new ArrayList<Course>();
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".COURSES WHERE COURSE_STATUS = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".COURSES WHERE COURSE_STATUS = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, status);
             ResultSet resultset = preparedStatement.executeQuery();
             while (resultset.next()) {
                 Course course = new Course();
+                course.setDescription(resultset.getString("course_description"));
                 course.setId(resultset.getInt("course_id"));
                 course.setName(resultset.getString("course_name"));
-                course.setDescription(resultset.getString("course_description"));
                 course.setStatus(resultset.getString("course_status"));
                 courses.add(course);
             }
@@ -187,7 +190,7 @@ public class CourseDAOImpl implements CourseDAO {
     }
 
     public List<Course> findCoursesByUserId(int user_id) {
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".COURSE_TO_USER WHERE USER_ID = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".COURSE_TO_USER WHERE USER_ID = ?";
         List<Course> courses = new ArrayList<Course>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -213,7 +216,7 @@ public class CourseDAOImpl implements CourseDAO {
     }
 
     public List<User> findUsersByCourseId(int course_id, String listener_type) {
-        String sql = "SELECT * FROM " + DBConnection.getDBName() + ".COURSE_TO_USER WHERE COURSE_ID = ? AND LISTENER_TYPE = ?";
+        String sql = "SELECT * FROM " + MyDBConnectionPool.dbName + ".COURSE_TO_USER WHERE COURSE_ID = ? AND LISTENER_TYPE = ?";
         List<User> users = new ArrayList<User>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

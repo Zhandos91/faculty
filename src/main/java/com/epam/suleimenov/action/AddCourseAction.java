@@ -6,7 +6,8 @@ import com.epam.suleimenov.service.CourseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddCourseAction implements Action {
 
@@ -16,8 +17,6 @@ public class AddCourseAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
 
-        CourseService courseService = new CourseService();
-
         String name = req.getParameter("courseName");
         String description = req.getParameter("description");
         User teacher = (User) req.getSession().getAttribute("teacher");
@@ -25,22 +24,23 @@ public class AddCourseAction implements Action {
         if (name.equals("")) {
             req.setAttribute("courseAddError", "Course name must be entered!!!");
             return addCourseAgain;
-        }
-        else if(description.equals("")) {
+        } else if (description.equals("")) {
             req.setAttribute("courseAddError", "Course description name must be entered!!!");
             return addCourseAgain;
         }
 
-        Course course = new Course();
-        course.setName(name);
-        course.setDescription(description);
-        course.setStatus("open");
-        List<User> teachers = new ArrayList<User>();
+        try (CourseService courseService = new CourseService()) {
+            Course course = new Course();
+            course.setName(name);
+            course.setDescription(description);
+            course.setStatus("open");
+            List<User> teachers = new ArrayList<User>();
 
-        teachers.add(teacher);
-        courseService.createCourse(course);
-        courseService.addCourseToUser(course, teacher, User.Role.valueOf("TEACHER").toString());
-        teacher.getCourses().add(course);
+            teachers.add(teacher);
+            courseService.createCourse(course);
+            courseService.addCourseToUser(course, teacher, User.Role.valueOf("TEACHER").toString());
+            teacher.getCourses().add(course);
+        }
 
         return teacherAction;
     }
