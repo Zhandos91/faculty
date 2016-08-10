@@ -30,7 +30,7 @@ public class SignupAction implements Action {
         password = Utils.md5Apache(password);
         String user_role = req.getParameter("user_role");
 
-        try (UserService userService = new UserService();) {
+        try (UserService userService = new UserService()) {
 
             if (userService.findUser(email) != null) {
                 req.setAttribute("signupError", "The email is already used, try different one!");

@@ -10,7 +10,7 @@ public interface ConnectionPool {
     int getPoolSize();
     void drain();
     Connection getConnection() throws SQLException;
-    public int getFreeConnections();
-    public int getBusyConnections();
+    int getFreeConnections();
+    int getBusyConnections();
 
 }

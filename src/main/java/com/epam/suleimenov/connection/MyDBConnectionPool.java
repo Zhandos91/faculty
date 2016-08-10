@@ -13,28 +13,13 @@ import java.util.concurrent.Executor;
 
 public class MyDBConnectionPool implements ConnectionPool {
 
-    private static final String DB_PROPERTY = "db.properties";
+    private final String DB_PROPERTY = "db.properties";
     public static String dbName;
     private static Logger log = LoggerFactory.getLogger(MyDBConnectionPool.class.getName());
-    private static String dbPath;
-    private static String dbUser;
-    private static String dbPassword;
-    private static String dbDriver;
-
-    static {
-        dbDriver = Utils.getFile(DB_PROPERTY).getProperty("db_driver");
-        dbPath = Utils.getFile(DB_PROPERTY).getProperty("db_path");
-        dbUser = Utils.getFile(DB_PROPERTY).getProperty("db_user");
-        dbPassword = Utils.getFile(DB_PROPERTY).getProperty("db_password");
-        dbName = Utils.getFile(DB_PROPERTY).getProperty("db_name");
-
-        try {
-            Class.forName(dbDriver);
-        } catch (ClassNotFoundException e) {
-            log.error("Oracle JDBC Driver is not found");
-            e.printStackTrace();
-        }
-    }
+    private String dbPath;
+    private String dbUser;
+    private String dbPassword;
+    private String dbDriver;
 
     private boolean checkConnections = true;
     private boolean drained = false;
@@ -43,6 +28,20 @@ public class MyDBConnectionPool implements ConnectionPool {
 
 
     public MyDBConnectionPool() {
+
+            dbDriver = Utils.getFile(DB_PROPERTY).getProperty("db_driver");
+            dbPath = Utils.getFile(DB_PROPERTY).getProperty("db_path");
+            dbUser = Utils.getFile(DB_PROPERTY).getProperty("db_user");
+            dbPassword = Utils.getFile(DB_PROPERTY).getProperty("db_password");
+            dbName = Utils.getFile(DB_PROPERTY).getProperty("db_name");
+
+            try {
+                Class.forName(dbDriver);
+            } catch (ClassNotFoundException e) {
+                log.error("Oracle JDBC Driver is not found");
+                e.printStackTrace();
+            }
+
         pooledConnections = new ArrayList<PooledConnection>();
     }
 

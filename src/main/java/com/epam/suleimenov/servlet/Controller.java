@@ -5,8 +5,6 @@ import com.epam.suleimenov.action.Action;
 import com.epam.suleimenov.action.ActionFactory;
 import com.epam.suleimenov.action.ActionResult;
 import com.epam.suleimenov.connection.MyDBConnectionPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +15,6 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
 
     private ActionFactory actionFactory;
-    private Logger log = LoggerFactory.getLogger(Controller.class);
 
     @Override
     public void init() throws ServletException {
